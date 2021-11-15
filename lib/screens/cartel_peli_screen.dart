@@ -173,6 +173,17 @@ class CartelPrincipal extends StatelessWidget {
         Stack(
           children: [
             Image.asset('assets/venom.png'),
+            FloatingActionButton.small(
+              heroTag: null,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+              ),
+              backgroundColor: Colors.black,
+              foregroundColor: Colors.white,
+            )
           ],
         ),
       ],
