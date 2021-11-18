@@ -92,16 +92,16 @@ class _CartelPeliculaState extends State<CartelPelicula> {
           pelicula: widget.pelicula,
         ),
         SizedBox(
-          height: 20,
+          height: 50,
         ),
         Container(
-          height: 50,
-          width: 150,
+          height: 80,
+          width: 170,
           child: ListView.builder(
             physics: PageScrollPhysics(),
             itemBuilder: (context, index) {
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.only(left: 10.0, right: 25),
                 child: FloatingActionButton.extended(
                   heroTag: null,
                   backgroundColor: Colors.red,
@@ -129,7 +129,7 @@ class _CartelPeliculaState extends State<CartelPelicula> {
                   },
                   label: Text(
                     '${widget.pelicula.sesiones[index].hora.hour}:${widget.pelicula.sesiones[index].hora.minute}',
-                    style: TextStyle(fontSize: 25, color: Colors.white),
+                    style: TextStyle(fontSize: 35, color: Colors.white),
                   ),
                 ),
               );
@@ -139,25 +139,6 @@ class _CartelPeliculaState extends State<CartelPelicula> {
           ),
         ),
         SizedBox(height: 14),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: SizedBox(
-            width: 300,
-            height: 60,
-            child: FloatingActionButton.extended(
-              backgroundColor: Colors.red,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              foregroundColor: Colors.white,
-              onPressed: () {},
-              label: Text(
-                "Reservar",
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-          ),
-        ),
       ],
     );
   }
