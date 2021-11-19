@@ -73,6 +73,14 @@ class _CartelPeliculaState extends State<CartelPelicula> {
         ),
         GestureDetector(
           onTap: () {
+            setState(() {
+              for (var entrada in misEntradas) {
+                widget.pelicula.sesiones
+                    .firstWhere((element) => horaSesion == element.hora)
+                    .butaques[entrada.num]
+                    .ocupada = widget.usuario.correo;
+              }
+            });
             Navigator.of(context).pop(misEntradas);
           },
           child: bottomRow(
@@ -117,13 +125,6 @@ class _CartelPeliculaState extends State<CartelPelicula> {
                           horaSesion = entradas[0];
                           misEntradas = entradas[1];
                           misEntradas.sort((a, b) => a.num.compareTo(b.num));
-                          for (var entrada in entradas[1]) {
-                            widget
-                                .pelicula
-                                .sesiones[index]
-                                .butaques[entrada.num]
-                                .ocupada = widget.usuario.nom;
-                          }
                         });
                     });
                   },

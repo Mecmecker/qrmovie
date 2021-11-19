@@ -11,4 +11,20 @@ class Peli {
       required this.info,
       required this.sesiones,
       this.asset = null});
+
+  Peli.fromJson(Map<String, dynamic> json)
+      : this(
+            titulo: json["titulo"],
+            info: json["info"],
+            sesiones: json["sesiones"],
+            asset: json["asset"]);
+
+  Map<String, dynamic> toJson() {
+    return {
+      "titulo": titulo,
+      "info": info,
+      "sesiones": sesiones,
+      "asset": asset,
+    };
+  }
 }

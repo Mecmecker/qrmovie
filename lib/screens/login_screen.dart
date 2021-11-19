@@ -59,7 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: _controllerPwd,
                 decoration: InputDecoration(
-                  hintText: 'Password',
+                  hintText: 'Write your password',
+                  labelText: 'Password',
                   prefixIcon: Icon(Icons.vpn_key),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
