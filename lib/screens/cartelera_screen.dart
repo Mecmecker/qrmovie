@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:qrmovie/models/persona_model.dart';
-
 import 'package:qrmovie/screens/cartel_peli_screen.dart';
 import 'package:qrmovie/models/datosfalsos.dart';
 
