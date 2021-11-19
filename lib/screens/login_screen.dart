@@ -35,92 +35,98 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text('LogIn Page'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: _controllerEmail,
-                decoration: InputDecoration(
-                  hintText: 'Put your email',
-                  labelText: 'Email',
-                  prefixIcon: Icon(Icons.email),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              TextField(
-                controller: _controllerPwd,
-                decoration: InputDecoration(
-                  hintText: 'Write your password',
-                  labelText: 'Password',
-                  prefixIcon: Icon(Icons.vpn_key),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset('assets/LOGO.png'),
+                TextField(
+                  controller: _controllerEmail,
+                  decoration: InputDecoration(
+                    hintText: 'Put your email',
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.email),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
                   ),
                 ),
-                obscureText: true,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Center(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ElevatedButton(
-                        onPressed: () async {
-                          if (_controllerEmail.text.isNotEmpty &&
-                              _controllerPwd.text.isNotEmpty)
-                            // ignore: curly_braces_in_flow_control_structures
-                            try {
-                              await _auth.signInWithEmailAndPassword(
-                                  email: _controllerEmail.text,
-                                  password: _controllerPwd.text);
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) => QrScannerScreen()));
-                            } on FirebaseAuthException catch (e) {
-                              Fluttertoast.showToast(
-                                  msg: 'Usuario o Contraseña incorrectos');
-                            }
-                        },
-                        child: Text('Login')),
-                    SizedBox(
-                      width: 50,
-                    ),
-                    ElevatedButton(
-                        onPressed: () async {
-                          if (_controllerEmail.text.isNotEmpty &&
-                              _controllerPwd.text.isNotEmpty)
-                            try {
-                              await _auth.createUserWithEmailAndPassword(
-                                  email: _controllerEmail.text,
-                                  password: _controllerPwd.text);
-                              setState(() {
-                                _controllerPwd.clear();
-                              });
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) => QrScannerScreen()));
-                            } on FirebaseAuthException catch (e) {
-                              Fluttertoast.showToast(
-                                  msg: 'Usuario o Contraseña ya existentes');
-                            }
-                        },
-                        child: Text('Registrar')),
-                  ],
+                SizedBox(
+                  height: 50,
                 ),
-              )
-            ],
+                TextField(
+                  controller: _controllerPwd,
+                  decoration: InputDecoration(
+                    hintText: 'Write your password',
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.vpn_key),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  obscureText: true,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () async {
+                            if (_controllerEmail.text.isNotEmpty &&
+                                _controllerPwd.text.isNotEmpty)
+                              // ignore: curly_braces_in_flow_control_structures
+                              try {
+                                await _auth.signInWithEmailAndPassword(
+                                    email: _controllerEmail.text,
+                                    password: _controllerPwd.text);
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            QrScannerScreen()));
+                              } on FirebaseAuthException catch (e) {
+                                Fluttertoast.showToast(
+                                    msg: 'Usuario o Contraseña incorrectos');
+                              }
+                          },
+                          child: Text('Login')),
+                      SizedBox(
+                        width: 50,
+                      ),
+                      ElevatedButton(
+                          onPressed: () async {
+                            if (_controllerEmail.text.isNotEmpty &&
+                                _controllerPwd.text.isNotEmpty)
+                              try {
+                                await _auth.createUserWithEmailAndPassword(
+                                    email: _controllerEmail.text,
+                                    password: _controllerPwd.text);
+                                setState(() {
+                                  _controllerPwd.clear();
+                                });
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            QrScannerScreen()));
+                              } on FirebaseAuthException catch (e) {
+                                Fluttertoast.showToast(
+                                    msg: 'Usuario o Contraseña ya existentes');
+                              }
+                          },
+                          child: Text('Registrar')),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

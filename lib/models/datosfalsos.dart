@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:qrmovie/models/peli_model.dart';
 import 'package:qrmovie/models/sesion_model.dart';
