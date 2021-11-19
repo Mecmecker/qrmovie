@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qrmovie/models/peli_model.dart';
 import 'package:qrmovie/models/persona_model.dart';
-import 'package:qrmovie/models/sesion_model.dart';
 import 'package:qrmovie/screens/cartel_peli_screen.dart';
 import 'package:qrmovie/models/datosfalsos.dart';
 
@@ -33,7 +31,7 @@ class _CarteleraScreenState extends State<CarteleraScreen> {
       ),
       body: GridView.builder(
         gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
             Navigator.of(context)
