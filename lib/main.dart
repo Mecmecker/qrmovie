@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qrmovie/screens/cartelera_screen.dart';
 import 'package:qrmovie/screens/login_screen.dart';
+import 'package:qrmovie/screens/qr_scanner_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

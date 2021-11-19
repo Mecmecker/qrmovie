@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:qrmovie/screens/cartelera_screen.dart';
+import 'package:qrmovie/screens/qr_scanner_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -84,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   email: _controllerEmail.text,
                                   password: _controllerPwd.text);
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => CarteleraScreen()));
+                                  builder: (context) => QrScannerScreen()));
                             } on FirebaseAuthException catch (e) {
                               Fluttertoast.showToast(
                                   msg: 'Usuario o Contraseña incorrectos');
@@ -101,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 email: _controllerEmail.text,
                                 password: _controllerPwd.text);
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => CarteleraScreen()));
+                                builder: (context) => QrScannerScreen()));
                           } on FirebaseAuthException catch (e) {
                             Fluttertoast.showToast(
                                 msg: 'Usuario o Contraseña ya existentes');
