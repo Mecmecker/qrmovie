@@ -80,12 +80,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () async {
                           if (_controllerEmail.text.isNotEmpty &&
                               _controllerPwd.text.isNotEmpty)
+                            // ignore: curly_braces_in_flow_control_structures
                             try {
                               await _auth.signInWithEmailAndPassword(
                                   email: _controllerEmail.text,
                                   password: _controllerPwd.text);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => QrScannerScreen()));
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => QrScannerScreen()));
                             } on FirebaseAuthException catch (e) {
                               Fluttertoast.showToast(
                                   msg: 'Usuario o Contraseña incorrectos');
@@ -97,16 +99,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     ElevatedButton(
                         onPressed: () async {
-                          try {
-                            await _auth.createUserWithEmailAndPassword(
-                                email: _controllerEmail.text,
-                                password: _controllerPwd.text);
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => QrScannerScreen()));
-                          } on FirebaseAuthException catch (e) {
-                            Fluttertoast.showToast(
-                                msg: 'Usuario o Contraseña ya existentes');
-                          }
+                          if (_controllerEmail.text.isNotEmpty &&
+                              _controllerPwd.text.isNotEmpty)
+                            try {
+                              await _auth.createUserWithEmailAndPassword(
+                                  email: _controllerEmail.text,
+                                  password: _controllerPwd.text);
+                              setState(() {
+                                _controllerPwd.clear();
+                              });
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => QrScannerScreen()));
+                            } on FirebaseAuthException catch (e) {
+                              Fluttertoast.showToast(
+                                  msg: 'Usuario o Contraseña ya existentes');
+                            }
                         },
                         child: Text('Registrar')),
                   ],
