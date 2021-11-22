@@ -5,19 +5,19 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:qrmovie/screens/cartelera_screen.dart';
 import 'package:qrmovie/screens/qr_scanner_screen.dart';
+import 'package:qrmovie/screens/reg_screen.dart';
 import 'package:qrmovie/services/auth.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _LoginState createState() => _LoginState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginState extends State<Login> {
   late TextEditingController _controllerEmail, _controllerPwd;
   final _auth = FirebaseAuth.instance;
-  final AuthService auth = AuthService();
 
   @override
   void initState() {
@@ -85,15 +85,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () async {
                             if (_controllerEmail.text.isNotEmpty &&
                                 _controllerPwd.text.isNotEmpty)
-                              // ignore: curly_braces_in_flow_control_structures
                               try {
-                                await _auth.signInWithEmailAndPassword(
-                                    email: _controllerEmail.text,
-                                    password: _controllerPwd.text);
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            QrScannerScreen()));
+                                await _auth
+                                    .signInWithEmailAndPassword(
+                                        email: _controllerEmail.text,
+                                        password: _controllerPwd.text)
+                                    .then((value) {
+                                  if (value != null)
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                QrScannerScreen()));
+                                });
                               } on FirebaseAuthException catch (e) {
                                 Fluttertoast.showToast(
                                     msg: 'Usuario o Contraseña incorrectos');
@@ -104,24 +107,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 50,
                       ),
                       ElevatedButton(
-                          onPressed: () async {
-                            if (_controllerEmail.text.isNotEmpty &&
-                                _controllerPwd.text.isNotEmpty)
-                              try {
-                                await _auth.createUserWithEmailAndPassword(
-                                    email: _controllerEmail.text,
-                                    password: _controllerPwd.text);
-                                setState(() {
-                                  _controllerPwd.clear();
-                                });
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            QrScannerScreen()));
-                              } on FirebaseAuthException catch (e) {
-                                Fluttertoast.showToast(
-                                    msg: 'Usuario o Contraseña ya existentes');
-                              }
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => RegScreen()));
                           },
                           child: Text('Registrar')),
                     ],

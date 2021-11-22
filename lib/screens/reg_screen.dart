@@ -1,26 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'package:qrmovie/screens/cartelera_screen.dart';
 import 'package:qrmovie/screens/qr_scanner_screen.dart';
-import 'package:qrmovie/services/auth.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegScreen extends StatefulWidget {
+  const RegScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegScreenState createState() => _RegScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  late TextEditingController _controllerEmail, _controllerPwd;
+class _RegScreenState extends State<RegScreen> {
+  late TextEditingController _controllerEmail, _controllerPwd, _controllerNom;
   final _auth = FirebaseAuth.instance;
-  final AuthService auth = AuthService();
 
   @override
   void initState() {
+    _controllerNom = TextEditingController();
     _controllerEmail = TextEditingController();
     _controllerPwd = TextEditingController();
 
@@ -28,18 +25,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
-  void dispose() {
-    _controllerEmail.dispose();
-    _controllerPwd.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('LogIn Page'),
+        title: Text('Registrar'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -49,6 +38,19 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset('assets/LOGO.png'),
+                TextField(
+                  controller: _controllerNom,
+                  decoration: InputDecoration(
+                    hintText: 'Put your name',
+                    labelText: 'Name',
+                    prefixIcon: Icon(Icons.image),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
                 TextField(
                   controller: _controllerEmail,
                   decoration: InputDecoration(
@@ -85,36 +87,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () async {
                             if (_controllerEmail.text.isNotEmpty &&
                                 _controllerPwd.text.isNotEmpty)
-                              // ignore: curly_braces_in_flow_control_structures
                               try {
-                                await _auth.signInWithEmailAndPassword(
-                                    email: _controllerEmail.text,
-                                    password: _controllerPwd.text);
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            QrScannerScreen()));
-                              } on FirebaseAuthException catch (e) {
-                                Fluttertoast.showToast(
-                                    msg: 'Usuario o Contraseña incorrectos');
-                              }
-                          },
-                          child: Text('Login')),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      ElevatedButton(
-                          onPressed: () async {
-                            if (_controllerEmail.text.isNotEmpty &&
-                                _controllerPwd.text.isNotEmpty)
-                              try {
-                                await _auth.createUserWithEmailAndPassword(
-                                    email: _controllerEmail.text,
-                                    password: _controllerPwd.text);
-                                setState(() {
-                                  _controllerPwd.clear();
+                                await _auth
+                                    .createUserWithEmailAndPassword(
+                                        email: _controllerEmail.text,
+                                        password: _controllerPwd.text)
+                                    .then((user) {
+                                  user.user!
+                                      .updateDisplayName(_controllerNom.text);
+                                  FirebaseFirestore.instance
+                                      .collection('Personas')
+                                      .doc(user.user!.uid)
+                                      .set({'entradas': []});
                                 });
-                                Navigator.of(context).pushReplacement(
+                                await Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             QrScannerScreen()));
