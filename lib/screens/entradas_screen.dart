@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qrmovie/screens/logIn.dart';
-import 'package:qrmovie/services/wrapper.dart';
 
 class MisEntradasScreen extends StatefulWidget {
   const MisEntradasScreen({Key? key}) : super(key: key);

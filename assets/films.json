@@ -1,20 +1,23 @@
 [
     {
         "name": "Dune",
-        "id": 24001,
+        "id": "24001",
         "description": "Tempor nisi irure voluptate et dolor sit qui nostrud esse voluptate irure ea est ullamco. Voluptate aliquip id nulla mollit sunt laborum. Non ea ut irure magna cillum eiusmod dolore aliqua ipsum.",
-        "cover":"https://www.cinesa.es/Manager/Peliculas/dune/cartelera.jpg",
+        "cover": "https://www.cinesa.es/Manager/Peliculas/dune/cartelera.jpg",
         "duration": 140,
-        "timetable": ["17:15","18:40","20:30"]
-
+        "timetable": [
+            "17:15",
+            "18:40",
+            "20:30"
+        ]
     },
     {
         "name": "Madres Paralelas",
-        "id": 24002,
+        "id": "24002",
         "description": "Veniam ex veniam et sunt ex nostrud officia Lorem aliquip occaecat non dolore consequat. Proident dolore pariatur excepteur ex. Fugiat quis officia reprehenderit qui adipisicing. Cupidatat consectetur est minim dolore proident minim.",
-        "cover":"https://www.cinesa.es/Manager/Peliculas/madresparalelas/cartelera.jpg",
-        "duration":121,
-        "timetable" : [
+        "cover": "https://www.cinesa.es/Manager/Peliculas/madresparalelas/cartelera.jpg",
+        "duration": 121,
+        "timetable": [
             "17:00",
             "18:30",
             "20:15"
@@ -22,141 +25,122 @@
     },
     {
         "name": "Cuestión de Derecho",
-        "id" : 24003,
+        "id": "24003",
         "description": "Dolore ad ad magna cillum ea officia adipisicing velit laborum sunt sunt pariatur velit. Est est duis elit occaecat commodo aliquip velit qui labore veniam velit sunt qui ea. Laborum Lorem magna cupidatat occaecat officia aliqua enim esse nisi laboris adipisicing occaecat aliquip. Ut dolor exercitation commodo veniam magna nisi fugiat. Sunt non tempor minim ex. Dolore sunt consequat ex anim id eiusmod.",
-        "cover":"https://www.cinesa.es/Manager/Peliculas/cuestindederechos/cartelera.jpg",
+        "cover": "https://www.cinesa.es/Manager/Peliculas/cuestindederechos/cartelera.jpg",
         "duration": 130,
         "timetable": [
             "17:32",
             "18:55",
             "20:40"
         ]
-        
     },
     {
         "name": "D'Artacán y los tres",
-        "id": 24004,
-        "description":"Consectetur aute duis commodo cillum excepteur dolor incididunt ut. Exercitation occaecat incididunt sunt ea Lorem Lorem commodo adipisicing nulla mollit consequat id. Non duis incididunt fugiat occaecat quis nostrud culpa labore ut do.",
+        "id": "24004",
+        "description": "Consectetur aute duis commodo cillum excepteur dolor incididunt ut. Exercitation occaecat incididunt sunt ea Lorem Lorem commodo adipisicing nulla mollit consequat id. Non duis incididunt fugiat occaecat quis nostrud culpa labore ut do.",
         "cover": "https://www.cinesa.es/Manager/Peliculas/dartacnylostresmosqueperros/cartelera.jpg",
         "duration": 122,
-        "timetable":
-        [
+        "timetable": [
             "17:15",
             "18:40",
             "20:30"
         ]
-         
     },
     {
         "name": "El buen patrón",
-        "id": 24005,
+        "id": "24005",
         "description": "Amet occaecat consectetur deserunt culpa nostrud sit tempor. Aute laborum irure cillum et eiusmod pariatur sit sit. Incididunt nostrud eu et nostrud exercitation dolore. Amet laboris consequat occaecat reprehenderit ipsum quis consequat. Cupidatat dolor id dolor nulla do incididunt adipisicing et incididunt exercitation et.",
         "cover": "https://www.cinesa.es/Manager/Peliculas/elbuenpatrn/cartelera.jpg",
         "duration": 140,
-        "timetable":
-        [
+        "timetable": [
             "17:15",
             "18:30",
             "20:25"
         ]
-        
     },
     {
         "name": "El sueño de Sigena",
-        "id": 24006,
+        "id": "24006",
         "description": "Voluptate officia exercitation voluptate laborum aliquip. Esse nulla amet id sunt incididunt. Ipsum ipsum culpa ullamco dolore. Excepteur ad Lorem velit enim commodo ullamco sint veniam reprehenderit. Excepteur non qui exercitation labore aliqua esse amet commodo. Adipisicing ex consectetur anim ex sit elit veniam.",
         "cover": "https://www.cinesa.es/Manager/Peliculas/elsueodesigena/cartelera.jpg",
         "duration": 135,
-        "timetable":
-        [
+        "timetable": [
             "17:15",
             "18:40",
             "20:30"
         ]
-        
     },
     {
         "name": "El Espía Inglés",
-        "id": 24007,
+        "id": "24007",
         "description": "Cillum tempor pariatur do cillum id amet deserunt velit commodo. Ex consectetur esse do irure aute reprehenderit consequat veniam dolore non ex nostrud veniam enim. Est non dolor ad id occaecat laborum et incididunt aliqua.",
         "cover": "https://www.cinesa.es/Manager/Peliculas/elespaingls/cartelera.jpg",
         "duration": 124,
-        "timetable":
-        [
+        "timetable": [
             "17:15",
             "18:45",
             "20:35"
         ]
-        
     },
     {
         "name": "El último duelo",
-        "id": 24008,
+        "id": "24008",
         "description": "Eu aute amet magna consequat id. Nisi tempor consectetur esse commodo laborum enim reprehenderit. Non Lorem laboris cillum esse ea labore veniam eiusmod laboris et tempor est qui ea. Laboris aliqua laboris ut eu. Lorem nostrud do commodo est laborum labore qui sit labore labore. Eiusmod dolore do eiusmod mollit elit. Incididunt pariatur qui velit enim.",
         "cover": "https://www.cinesa.es/Manager/Peliculas/elltimoduelo/cartelera.jpg",
         "duration": 128,
-        "timetable":
-        [
+        "timetable": [
             "17:00",
             "18:45",
             "20:30"
         ]
-        
     },
     {
         "name": "Halloween Kills",
-        "id": 24009,
+        "id": "24009",
         "description": "Cupidatat eu dolore ea mollit velit nisi aliquip consequat. Commodo labore officia veniam laborum cillum consectetur incididunt tempor amet. Ullamco culpa sunt laborum minim ut sint cillum ad.",
         "cover": "https://www.cinesa.es/Manager/Peliculas/halloweenkills/cartelera.jpg",
         "duration": 144,
-        "timetable":
-        [
+        "timetable": [
             "17:19",
             "18:40",
             "20:50"
         ]
-        
     },
     {
         "name": "Eternals",
-        "id": 24010,
+        "id": "24010",
         "description": "Elit nisi labore non proident proident aute deserunt. Reprehenderit labore quis nisi Lorem in dolor. Labore do laborum Lorem aliquip irure anim irure amet nisi culpa elit consectetur. Dolore irure deserunt aliqua non sit laborum sint fugiat. Mollit labore exercitation magna sit enim aliqua deserunt cillum enim qui enim occaecat. Adipisicing ad nisi do deserunt ex nostrud fugiat et fugiat mollit officia.",
         "cover": "https://www.cinesa.es/Manager/Peliculas/eternals/cartelera.jpg",
         "duration": 119,
-        "timetable":
-        [
+        "timetable": [
             "17:15",
             "18:40",
             "20:30"
         ]
-        
     },
     {
         "name": "La Crónica Francesa",
-        "id": 24011,
+        "id": "24011",
         "description": "Veniam ex veniam et sunt ex nostrud officia Lorem aliquip occaecat non dolore consequat. Proident dolore pariatur excepteur ex. Fugiat quis officia reprehenderit qui adipisicing. Cupidatat consectetur est minim dolore proident minim.",
         "cover": "https://www.cinesa.es/Manager/Peliculas/lacrnicafrancesa/cartelera.jpg",
         "duration": 131,
-        "timetable":
-        [
+        "timetable": [
             "17:15",
             "18:40",
             "20:45"
         ]
-        
     },
     {
         "name": "La puerta de al lado",
-        "id": 24012,
+        "id": "24012",
         "description": "Ad excepteur commodo et est sunt aute officia. Dolor fugiat aliquip amet nisi consequat occaecat elit. Id anim est et minim ad sint elit quis in fugiat. Esse ullamco voluptate consequat ea sint do labore nostrud incididunt excepteur. Ex consectetur laborum minim culpa aliqua ullamco dolor id reprehenderit excepteur.",
         "cover": "https://www.cinesa.es/Manager/Peliculas/lapuertadeallado/cartelera.jpg",
         "duration": 127,
-        "timetable":
-        [
+        "timetable": [
             "17:15",
             "18:40",
             "20:55"
         ]
-        
     }
 ]

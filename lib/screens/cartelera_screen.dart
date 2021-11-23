@@ -1,5 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:qrmovie/models/modelo_pelijson.dart';
+import 'package:qrmovie/models/peli_model.dart';
 import 'package:qrmovie/models/persona_model.dart';
+import 'package:qrmovie/models/sesion_model.dart';
 import 'package:qrmovie/screens/cartel_peli_screen.dart';
 import 'package:qrmovie/models/datosfalsos.dart';
 
@@ -13,6 +20,24 @@ class CarteleraScreen extends StatefulWidget {
 class _CarteleraScreenState extends State<CarteleraScreen> {
   Persona usuario = Persona(nom: 'Dani', correo: 'dani@gmail.com');
 
+  List data = [];
+  List<Pelicula> peliss = [];
+
+  Future<String> loadJsonData() async {
+    var jsonText = await rootBundle.loadString('assets/films.json');
+    setState(() => data = json.decode(jsonText));
+    for (var x in data) {
+      peliss.add(Pelicula.fromJson(x));
+    }
+    return 'success';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadJsonData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +47,7 @@ class _CarteleraScreenState extends State<CarteleraScreen> {
               onPressed: () {},
               child: Row(
                 children: [
-                  Text('Mis entradas'),
+                  Text(data == null ? 'Mis entradas' : '${peliss.length}'),
                   Image.asset('assets/entrada-de-cine.png')
                 ],
               ))

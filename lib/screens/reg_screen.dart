@@ -98,7 +98,8 @@ class _RegScreenState extends State<RegScreen> {
                                   FirebaseFirestore.instance
                                       .collection('Personas')
                                       .doc(user.user!.uid)
-                                      .set({'entradas': []});
+                                      .collection('Entradas')
+                                      .doc();
                                 });
                                 await Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(

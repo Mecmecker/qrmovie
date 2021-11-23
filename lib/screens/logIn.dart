@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qrmovie/screens/cartelera_screen.dart';
 import 'package:qrmovie/screens/qr_scanner_screen.dart';
 import 'package:qrmovie/screens/reg_screen.dart';
-import 'package:qrmovie/services/auth.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

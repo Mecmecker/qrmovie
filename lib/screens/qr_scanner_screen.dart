@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:qrmovie/screens/cartelera_screen.dart';
 import 'package:qrmovie/screens/entradas_screen.dart';
-import 'package:qrmovie/services/auth.dart';
 
 class QrScannerScreen extends StatefulWidget {
   const QrScannerScreen({Key? key}) : super(key: key);

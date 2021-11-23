@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:qrmovie/screens/cartelera_screen.dart';
 import 'package:qrmovie/screens/qr_scanner_screen.dart';
-import 'package:qrmovie/services/auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -17,7 +16,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _controllerEmail, _controllerPwd;
   final _auth = FirebaseAuth.instance;
-  final AuthService auth = AuthService();
 
   @override
   void initState() {

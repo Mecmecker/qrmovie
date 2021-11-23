@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qrmovie/models/butaca_model.dart';
 import 'package:qrmovie/models/peli_model.dart';
@@ -21,6 +23,24 @@ class CartelPelicula extends StatefulWidget {
 class _CartelPeliculaState extends State<CartelPelicula> {
   List<Butaca> misEntradas = [];
   late TimeOfDay horaSesion;
+  final _auth = FirebaseAuth.instance;
+  final fb = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    for (var x in widget.pelicula.sesiones)
+      for (var i in x.butaques)
+        fb
+            .collection('Peliculas')
+            .doc('${widget.pelicula.titulo}')
+            .collection('Sesiones')
+            .doc('${x.hora}')
+            .collection('Butacas')
+            .doc()
+            .set(i.toJson());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -119,13 +139,21 @@ class _CartelPeliculaState extends State<CartelPelicula> {
                             builder: (context) => SalaScreen(
                                 sesion: widget.pelicula.sesiones[index],
                                 titulo: widget.pelicula.titulo)))
-                        .then((entradas) {
-                      if (entradas != null)
+                        .then((entradas) async {
+                      if (entradas != null) {
                         setState(() {
                           horaSesion = entradas[0];
                           misEntradas = entradas[1];
                           misEntradas.sort((a, b) => a.num.compareTo(b.num));
                         });
+                        for (var x in misEntradas)
+                          await fb
+                              .collection('Personas')
+                              .doc(_auth.currentUser!.uid)
+                              .collection('entradas')
+                              .doc()
+                              .set(x.toJson());
+                      }
                     });
                   },
                   label: Text(

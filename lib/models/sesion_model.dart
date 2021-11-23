@@ -26,7 +26,7 @@ class Sesion {
   Map<String, dynamic> toJson() {
     return {
       "numButaques": numButaques,
-      "hora": hora,
+      "hora": hora.toString(),
       "butaques": butaques,
     };
   }
