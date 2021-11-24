@@ -1,19 +1,21 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_string_interpolations
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qrmovie/models/butaca_model.dart';
+import 'package:qrmovie/models/modelo_pelijson.dart';
 import 'package:qrmovie/models/peli_model.dart';
 import 'package:qrmovie/models/persona_model.dart';
+import 'package:qrmovie/models/sesion_model.dart';
 import 'package:qrmovie/screens/sesion_screen.dart';
 import 'package:qrmovie/widgets/bottom.dart';
 
 class CartelPelicula extends StatefulWidget {
-  final Peli pelicula;
-  final Persona usuario;
-  const CartelPelicula(
-      {Key? key, required this.pelicula, required this.usuario})
+  final Pelicula pelicula;
+  final String id;
+
+  const CartelPelicula({Key? key, required this.pelicula, required this.id})
       : super(key: key);
 
   @override
@@ -25,12 +27,18 @@ class _CartelPeliculaState extends State<CartelPelicula> {
   late TimeOfDay horaSesion;
   final _auth = FirebaseAuth.instance;
   final fb = FirebaseFirestore.instance;
+  Future<bool?> _encontrar() async {
+    var encontrado = await fb
+        .collection('Peliculas')
+        .doc('gdsgsd')
+        .get()
+        .then((value) => value.exists);
+  }
 
-  @override
-  void initState() {
+  /**void _crearNuevaCollection() async {
     for (var x in widget.pelicula.sesiones)
       for (var i in x.butaques)
-        fb
+        await fb
             .collection('Peliculas')
             .doc('${widget.pelicula.titulo}')
             .collection('Sesiones')
@@ -38,6 +46,25 @@ class _CartelPeliculaState extends State<CartelPelicula> {
             .collection('Butacas')
             .doc()
             .set(i.toJson());
+  }
+**/
+
+  void _crearNuevaCollection() async {
+    for (var x in widget.pelicula.sesiones)
+      await fb
+          .collection('Peliculas')
+          .doc('${widget.id}')
+          .collection('Sesiones')
+          .doc()
+          .set({
+        'numButaques': 56,
+        'hora': x,
+      });
+  }
+
+  @override
+  void initState() {
+    _crearNuevaCollection();
     super.initState();
   }
 
@@ -58,7 +85,9 @@ class _CartelPeliculaState extends State<CartelPelicula> {
     );
     return Column(
       children: [
-        CartelPrincipal(),
+        CartelPrincipal(
+          asset: widget.pelicula.asset,
+        ),
         Expanded(
           child: Container(
             child: ListView.separated(
@@ -98,7 +127,7 @@ class _CartelPeliculaState extends State<CartelPelicula> {
                 widget.pelicula.sesiones
                     .firstWhere((element) => horaSesion == element.hora)
                     .butaques[entrada.num]
-                    .ocupada = widget.usuario.correo;
+                    .ocupada = _auth.currentUser!.email;
               }
             });
             Navigator.of(context).pop(misEntradas);
@@ -115,7 +144,9 @@ class _CartelPeliculaState extends State<CartelPelicula> {
     return Column(
       // ignore: prefer_const_literals_to_create_immutables
       children: [
-        CartelPrincipal(),
+        CartelPrincipal(
+          asset: widget.pelicula.asset,
+        ),
         InfoPelicula(
           pelicula: widget.pelicula,
         ),
@@ -125,46 +156,64 @@ class _CartelPeliculaState extends State<CartelPelicula> {
         Container(
           height: 80,
           width: 170,
-          child: ListView.builder(
-            physics: PageScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 25),
-                child: FloatingActionButton.extended(
-                  heroTag: null,
-                  backgroundColor: Colors.red,
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(
-                            builder: (context) => SalaScreen(
-                                sesion: widget.pelicula.sesiones[index],
-                                titulo: widget.pelicula.titulo)))
-                        .then((entradas) async {
-                      if (entradas != null) {
-                        setState(() {
-                          horaSesion = entradas[0];
-                          misEntradas = entradas[1];
-                          misEntradas.sort((a, b) => a.num.compareTo(b.num));
-                        });
-                        for (var x in misEntradas)
-                          await fb
-                              .collection('Personas')
-                              .doc(_auth.currentUser!.uid)
-                              .collection('entradas')
-                              .doc()
-                              .set(x.toJson());
-                      }
-                    });
+          child: FutureBuilder(
+            future: fb.collection('Peliculas').doc('${widget.id}').get(),
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                    snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else
+                return ListView.builder(
+                  physics: PageScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 25),
+                      child: FloatingActionButton.extended(
+                        heroTag: null,
+                        backgroundColor: Colors.red,
+                        onPressed: () {
+                          Navigator.of(context)
+                              .push(
+                            MaterialPageRoute(
+                              builder: (context) => SalaScreen(
+                                  sesion: Sesion(
+                                    hora: TimeOfDay(
+                                        hour: int.parse(widget
+                                            .pelicula.sesiones[index]
+                                            .split(':')[0]),
+                                        minute: int.parse(widget
+                                            .pelicula.sesiones[index]
+                                            .split(':')[1])),
+                                  ),
+                                  path: '/Peliculas/${widget.id}/Sesiones/',
+                                  titulo: widget.pelicula.titulo),
+                            ),
+                          )
+                              .then((entradas) async {
+                            if (entradas != null) {
+                              setState(() {
+                                horaSesion = entradas[0];
+                                misEntradas = entradas[1];
+                                misEntradas
+                                    .sort((a, b) => a.num.compareTo(b.num));
+                              });
+                            }
+                          });
+                        },
+                        label: Text(
+                          '${widget.pelicula.sesiones[index]}',
+                          style: TextStyle(fontSize: 35, color: Colors.white),
+                        ),
+                      ),
+                    );
                   },
-                  label: Text(
-                    '${widget.pelicula.sesiones[index].hora.hour}:${widget.pelicula.sesiones[index].hora.minute}',
-                    style: TextStyle(fontSize: 35, color: Colors.white),
-                  ),
-                ),
-              );
+                  itemCount: widget.pelicula.sesiones.length,
+                  scrollDirection: Axis.horizontal,
+                );
             },
-            itemCount: widget.pelicula.sesiones.length,
-            scrollDirection: Axis.horizontal,
           ),
         ),
         SizedBox(height: 14),
@@ -174,7 +223,8 @@ class _CartelPeliculaState extends State<CartelPelicula> {
 }
 
 class CartelPrincipal extends StatelessWidget {
-  const CartelPrincipal({Key? key}) : super(key: key);
+  final String asset;
+  const CartelPrincipal({Key? key, required this.asset}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +232,7 @@ class CartelPrincipal extends StatelessWidget {
       children: [
         Stack(
           children: [
-            Image.asset('assets/venom.png'),
+            Image.network(asset),
             FloatingActionButton.small(
               heroTag: null,
               onPressed: () {
@@ -202,7 +252,7 @@ class CartelPrincipal extends StatelessWidget {
 }
 
 class InfoPelicula extends StatelessWidget {
-  final Peli pelicula;
+  final Pelicula pelicula;
   const InfoPelicula({Key? key, required this.pelicula}) : super(key: key);
 
   @override

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qrmovie/models/butaca_model.dart';
 import 'package:qrmovie/models/sesion_model.dart';
@@ -6,7 +7,12 @@ import 'package:qrmovie/widgets/bottom.dart';
 class SalaScreen extends StatefulWidget {
   final String titulo;
   final Sesion sesion;
-  const SalaScreen({Key? key, required this.sesion, required this.titulo})
+  final String path;
+  const SalaScreen(
+      {Key? key,
+      required this.sesion,
+      required this.titulo,
+      required this.path})
       : super(key: key);
 
   @override
@@ -16,6 +22,14 @@ class SalaScreen extends StatefulWidget {
 class _SalaScreenState extends State<SalaScreen> {
   List<Butaca> seleccionadas = [];
   late Sesion _sesion;
+  late String _path;
+  final fb = FirebaseFirestore.instance;
+
+  void _crearNuevaCollection() async {
+    for (var x in widget.sesion.butaques)
+      await fb.collection(widget.path).doc().set(x.toJson());
+  }
+
   @override
   void initState() {
     _sesion = widget.sesion;

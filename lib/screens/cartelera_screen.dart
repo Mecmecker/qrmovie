@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qrmovie/models/modelo_pelijson.dart';
@@ -18,10 +20,15 @@ class CarteleraScreen extends StatefulWidget {
 }
 
 class _CarteleraScreenState extends State<CarteleraScreen> {
-  Persona usuario = Persona(nom: 'Dani', correo: 'dani@gmail.com');
-
   List data = [];
   List<Pelicula> peliss = [];
+  final _auth = FirebaseAuth.instance;
+  final fb = FirebaseFirestore.instance;
+
+  void _crearNuevaCollection() async {
+    for (var x in peliss)
+      await fb.collection('Peliculas').doc('${x.id}').set(x.toJson());
+  }
 
   Future<String> loadJsonData() async {
     var jsonText = await rootBundle.loadString('assets/films.json');
@@ -36,6 +43,7 @@ class _CarteleraScreenState extends State<CarteleraScreen> {
   void initState() {
     super.initState();
     loadJsonData();
+    _crearNuevaCollection();
   }
 
   @override
@@ -62,12 +70,16 @@ class _CarteleraScreenState extends State<CarteleraScreen> {
             Navigator.of(context)
                 .push(MaterialPageRoute(
                     builder: (context) => CartelPelicula(
-                          pelicula: pelis[index],
-                          usuario: usuario,
-                        )))
+                        pelicula: peliss[index], id: peliss[index].id)))
                 .then((entradas) {
-              setState(() {
-                usuario.entradas.addAll(entradas);
+              setState(() async {
+                for (var x in entradas)
+                  await fb
+                      .collection('Personas')
+                      .doc(_auth.currentUser!.uid)
+                      .collection('entradas')
+                      .doc()
+                      .set(x.toJson());
               });
             });
           },
@@ -77,20 +89,18 @@ class _CarteleraScreenState extends State<CarteleraScreen> {
                 child: Stack(
               children: [
                 Container(
-                  child: (pelis[index].asset != null
-                      ? Image.asset(
-                          pelis[index].asset!,
-                        )
+                  child: (peliss[index].asset != null
+                      ? Image.network(peliss[index].asset)
                       : Image.asset('assets/venom.png')),
                 ),
                 Align(
                     alignment: Alignment.bottomCenter,
-                    child: Text(pelis[index].titulo)),
+                    child: Text(peliss[index].titulo)),
               ],
             )),
           ),
         ),
-        itemCount: pelis.length,
+        itemCount: peliss.length,
       ),
     );
   }

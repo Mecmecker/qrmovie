@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:qrmovie/screens/cartelera_screen.dart';
 import 'package:qrmovie/screens/logIn.dart';
 import 'package:qrmovie/screens/login_screen.dart';
+import 'package:qrmovie/screens/muestra.dart';
 import 'package:qrmovie/screens/qr_scanner_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: Muestra(),
     );
   }
 }
