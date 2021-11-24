@@ -24,14 +24,19 @@ class _SalaScreenState extends State<SalaScreen> {
   late Sesion _sesion;
   late String _path;
   final fb = FirebaseFirestore.instance;
-
+//FALTA MIRAR EL PATH
   void _crearNuevaCollection() async {
     for (var x in widget.sesion.butaques)
-      await fb.collection(widget.path).doc().set(x.toJson());
+      await fb
+          .doc('/Peliculas/24001/Sesiones/9Bu3UqNDZvVJhu0CU5Q3')
+          .collection('Butacas')
+          .doc()
+          .set(x.toJson());
   }
 
   @override
   void initState() {
+    _crearNuevaCollection();
     _sesion = widget.sesion;
     super.initState();
   }

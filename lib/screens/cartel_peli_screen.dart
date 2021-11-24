@@ -24,7 +24,7 @@ class CartelPelicula extends StatefulWidget {
 
 class _CartelPeliculaState extends State<CartelPelicula> {
   List<Butaca> misEntradas = [];
-  late TimeOfDay horaSesion;
+  late String horaSesion;
   final _auth = FirebaseAuth.instance;
   final fb = FirebaseFirestore.instance;
   Future<bool?> _encontrar() async {
@@ -109,7 +109,7 @@ class _CartelPeliculaState extends State<CartelPelicula> {
                         ]),
                         title: Text(widget.pelicula.titulo),
                         subtitle: Text(
-                          'Hora de la sesion: ${horaSesion.hour}:${horaSesion.minute}',
+                          'Hora de la sesion: $horaSesion',
                         ),
                       ),
                     ),
@@ -125,7 +125,7 @@ class _CartelPeliculaState extends State<CartelPelicula> {
             setState(() {
               for (var entrada in misEntradas) {
                 widget.pelicula.sesiones
-                    .firstWhere((element) => horaSesion == element.hora)
+                    .firstWhere((element) => horaSesion == element)
                     .butaques[entrada.num]
                     .ocupada = _auth.currentUser!.email;
               }
@@ -188,14 +188,14 @@ class _CartelPeliculaState extends State<CartelPelicula> {
                                             .pelicula.sesiones[index]
                                             .split(':')[1])),
                                   ),
-                                  path: '/Peliculas/${widget.id}/Sesiones/',
+                                  path: '/Peliculas/${widget.id}/Sesiones',
                                   titulo: widget.pelicula.titulo),
                             ),
                           )
                               .then((entradas) async {
                             if (entradas != null) {
                               setState(() {
-                                horaSesion = entradas[0];
+                                horaSesion = entradas[0].toString();
                                 misEntradas = entradas[1];
                                 misEntradas
                                     .sort((a, b) => a.num.compareTo(b.num));

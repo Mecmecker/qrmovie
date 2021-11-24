@@ -7,7 +7,7 @@ class Muestra extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fb = FirebaseFirestore.instance;
-    final path = '/Peliculas/24009/Sesiones/61NQTyPEEFOmzm9YdVPY';
+    final path = '/Peliculas/24009';
     final busqueda = print(fb.collection('Peliculas').doc().parent);
     return Scaffold(
       appBar: AppBar(
@@ -24,7 +24,7 @@ class Muestra extends StatelessWidget {
           }
           Map<String, dynamic> data = snapshot.data!.data()!;
           return Column(
-            children: [Text(data['hora'])],
+            children: [Text(data['id'])],
           );
         },
       ),

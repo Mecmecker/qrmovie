@@ -42,8 +42,7 @@ class _CarteleraScreenState extends State<CarteleraScreen> {
   @override
   void initState() {
     super.initState();
-    loadJsonData();
-    _crearNuevaCollection();
+    loadJsonData().then((value) => _crearNuevaCollection());
   }
 
   @override
@@ -55,7 +54,7 @@ class _CarteleraScreenState extends State<CarteleraScreen> {
               onPressed: () {},
               child: Row(
                 children: [
-                  Text(data == null ? 'Mis entradas' : '${peliss.length}'),
+                  Text('Mis entradas'),
                   Image.asset('assets/entrada-de-cine.png')
                 ],
               ))
