@@ -7,10 +7,7 @@ class Muestra extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fb = FirebaseFirestore.instance;
-    final pathBusquesda = fb
-        .collection('/Peliculas/24001/Sesiones')
-        .where('hora', isEqualTo: '20:30')
-        .get();
+    final p = '/Peliculas/24001/Sesiones/54RVJD6rmgeMzpQHfyNk';
 
     final path = '/Peliculas/24009';
     final busqueda = print(fb.collection('Peliculas').doc().parent);
@@ -19,17 +16,23 @@ class Muestra extends StatelessWidget {
         title: Text('nada'),
       ),
       body: StreamBuilder(
-        stream: fb.doc(path).snapshots(),
+        stream: fb
+            .doc(p)
+            .collection('Butacas')
+            .orderBy('num', descending: false)
+            .snapshots(),
         builder: (BuildContext context,
-            AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
-          Map<String, dynamic> data = snapshot.data!.data()!;
-          return Column(
-            children: [Text(data['id'])],
+          return ListView(
+            children: snapshot.data!.docs.map((document) {
+              Map<String, dynamic> data = document.data();
+              return Text('${data['num']}');
+            }).toList(),
           );
         },
       ),

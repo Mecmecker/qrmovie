@@ -21,4 +21,12 @@ class Butaca {
       'ocupada': ocupada,
     };
   }
+
+//buscar si esta la butaca en las entradas cogidas
+  bool sonIguales(List<Butaca> b) {
+    for (Butaca but in b) {
+      if (but.num == this.num) return true;
+    }
+    return false;
+  }
 }

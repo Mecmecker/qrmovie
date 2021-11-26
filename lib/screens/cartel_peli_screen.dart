@@ -8,6 +8,7 @@ import 'package:qrmovie/models/modelo_pelijson.dart';
 import 'package:qrmovie/models/peli_model.dart';
 import 'package:qrmovie/models/persona_model.dart';
 import 'package:qrmovie/models/sesion_model.dart';
+import 'package:qrmovie/screens/sala_con_butacas.dart';
 import 'package:qrmovie/screens/sesion_screen.dart';
 import 'package:qrmovie/widgets/bottom.dart';
 
@@ -54,18 +55,10 @@ class _CartelPeliculaState extends State<CartelPelicula> {
 
   void _crearNuevaCollection() async {
     for (var x in widget.pelicula.sesiones) {
-      String p = await fb
-          .collection('Peliculas')
-          .doc('${widget.id}')
-          .collection('Sesiones')
-          .doc()
-          .path;
-
-      await fb.doc(p).set({
-        'numButaques': 56,
-        'hora': x,
-      });
-      _paths.add(p);
+      final sesionRef = await fb
+          .collection('/Peliculas/${widget.id}/Sesiones')
+          .add({'numButaques': 56, 'hora': x});
+      _paths.add(sesionRef.path);
     }
   }
 
@@ -185,7 +178,7 @@ class _CartelPeliculaState extends State<CartelPelicula> {
                           Navigator.of(context)
                               .push(
                             MaterialPageRoute(
-                              builder: (context) => SalaScreen(
+                              builder: (context) => SalaButaca(
                                   sesion: Sesion(
                                     hora: TimeOfDay(
                                         hour: int.parse(widget
