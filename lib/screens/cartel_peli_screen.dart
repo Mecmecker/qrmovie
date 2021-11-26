@@ -122,14 +122,6 @@ class _CartelPeliculaState extends State<CartelPelicula> {
         ),
         GestureDetector(
           onTap: () {
-            setState(() {
-              for (var entrada in misEntradas) {
-                widget.pelicula.sesiones
-                    .firstWhere((element) => horaSesion == element)
-                    .butaques[entrada.num]
-                    .ocupada = _auth.currentUser!.email;
-              }
-            });
             Navigator.of(context).pop(misEntradas);
           },
           child: bottomRow(
