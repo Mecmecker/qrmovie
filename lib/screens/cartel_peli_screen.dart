@@ -27,6 +27,9 @@ class _CartelPeliculaState extends State<CartelPelicula> {
   late String horaSesion;
   final _auth = FirebaseAuth.instance;
   final fb = FirebaseFirestore.instance;
+
+  List<String> _paths = [];
+
   Future<bool?> _encontrar() async {
     var encontrado = await fb
         .collection('Peliculas')
@@ -50,16 +53,20 @@ class _CartelPeliculaState extends State<CartelPelicula> {
 **/
 
   void _crearNuevaCollection() async {
-    for (var x in widget.pelicula.sesiones)
-      await fb
+    for (var x in widget.pelicula.sesiones) {
+      String p = await fb
           .collection('Peliculas')
           .doc('${widget.id}')
           .collection('Sesiones')
           .doc()
-          .set({
+          .path;
+
+      await fb.doc(p).set({
         'numButaques': 56,
         'hora': x,
       });
+      _paths.add(p);
+    }
   }
 
   @override
@@ -188,7 +195,7 @@ class _CartelPeliculaState extends State<CartelPelicula> {
                                             .pelicula.sesiones[index]
                                             .split(':')[1])),
                                   ),
-                                  path: '/Peliculas/${widget.id}/Sesiones',
+                                  path: _paths[index],
                                   titulo: widget.pelicula.titulo),
                             ),
                           )

@@ -7,6 +7,11 @@ class Muestra extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fb = FirebaseFirestore.instance;
+    final pathBusquesda = fb
+        .collection('/Peliculas/24001/Sesiones')
+        .where('hora', isEqualTo: '20:30')
+        .get();
+
     final path = '/Peliculas/24009';
     final busqueda = print(fb.collection('Peliculas').doc().parent);
     return Scaffold(

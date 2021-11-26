@@ -27,11 +27,7 @@ class _SalaScreenState extends State<SalaScreen> {
 //FALTA MIRAR EL PATH
   void _crearNuevaCollection() async {
     for (var x in widget.sesion.butaques)
-      await fb
-          .doc('/Peliculas/24001/Sesiones/9Bu3UqNDZvVJhu0CU5Q3')
-          .collection('Butacas')
-          .doc()
-          .set(x.toJson());
+      await fb.doc(widget.path).collection('Butacas').doc().set(x.toJson());
   }
 
   @override
