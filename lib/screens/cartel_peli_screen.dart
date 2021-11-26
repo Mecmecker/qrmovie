@@ -55,10 +55,13 @@ class _CartelPeliculaState extends State<CartelPelicula> {
 
   void _crearNuevaCollection() async {
     for (var x in widget.pelicula.sesiones) {
-      final sesionRef = await fb
+      final sesionRef =
+          await fb.collection('/Peliculas/${widget.id}/Sesiones').doc(x).path;
+      fb
           .collection('/Peliculas/${widget.id}/Sesiones')
-          .add({'numButaques': 56, 'hora': x});
-      _paths.add(sesionRef.path);
+          .doc(x)
+          .set({'numButaques': 56, 'hora': x}, SetOptions(merge: true));
+      _paths.add(sesionRef);
     }
   }
 
@@ -171,17 +174,19 @@ class _CartelPeliculaState extends State<CartelPelicula> {
                               .push(
                             MaterialPageRoute(
                               builder: (context) => SalaButaca(
-                                  sesion: Sesion(
-                                    hora: TimeOfDay(
-                                        hour: int.parse(widget
-                                            .pelicula.sesiones[index]
-                                            .split(':')[0]),
-                                        minute: int.parse(widget
-                                            .pelicula.sesiones[index]
-                                            .split(':')[1])),
-                                  ),
-                                  path: _paths[index],
-                                  titulo: widget.pelicula.titulo),
+                                sesion: Sesion(
+                                  hora: TimeOfDay(
+                                      hour: int.parse(widget
+                                          .pelicula.sesiones[index]
+                                          .split(':')[0]),
+                                      minute: int.parse(widget
+                                          .pelicula.sesiones[index]
+                                          .split(':')[1])),
+                                ),
+                                path: _paths[index],
+                                titulo: widget.pelicula.titulo,
+                                id: widget.pelicula.id,
+                              ),
                             ),
                           )
                               .then((entradas) async {

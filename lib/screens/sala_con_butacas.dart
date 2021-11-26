@@ -6,6 +6,7 @@ import 'package:qrmovie/models/sesion_model.dart';
 import 'package:qrmovie/widgets/bottom.dart';
 
 class SalaButaca extends StatefulWidget {
+  final String id;
   final String titulo;
   final Sesion sesion;
   final String path;
@@ -13,7 +14,8 @@ class SalaButaca extends StatefulWidget {
       {Key? key,
       required this.sesion,
       required this.titulo,
-      required this.path})
+      required this.path,
+      required this.id})
       : super(key: key);
 
   @override
@@ -31,8 +33,8 @@ class _SalaButacaState extends State<SalaButaca> {
   void _crearNuevaCollection() async {
     final batch = FirebaseFirestore.instance.batch();
     for (var x in widget.sesion.butaques) {
-      final docRef = fb.doc(widget.path).collection('Butacas').doc();
-      batch.set(docRef, x.toJson());
+      final docRef = fb.doc(widget.path).collection('Butacas').doc('${x.num}');
+      batch.set(docRef, x.toJson(), SetOptions(mergeFields: ['num']));
     }
     await batch.commit();
   }
@@ -40,6 +42,7 @@ class _SalaButacaState extends State<SalaButaca> {
   @override
   void initState() {
     _crearNuevaCollection();
+
     _sesion = widget.sesion;
     super.initState();
   }
