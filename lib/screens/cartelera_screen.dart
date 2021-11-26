@@ -26,8 +26,12 @@ class _CarteleraScreenState extends State<CarteleraScreen> {
   final fb = FirebaseFirestore.instance;
 
   void _crearNuevaCollection() async {
-    for (var x in peliss)
-      await fb.collection('Peliculas').doc('${x.id}').set(x.toJson());
+    final batch = FirebaseFirestore.instance.batch();
+    for (var x in peliss) {
+      final peliref = fb.collection('Peliculas').doc(x.id);
+      batch.set(peliref, x.toJson());
+    }
+    await batch.commit();
   }
 
   Future<String> loadJsonData() async {

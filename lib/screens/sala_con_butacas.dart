@@ -119,7 +119,8 @@ class _SalaButacaState extends State<SalaButaca> {
                                 child: Container(
                                   width: 6,
                                   height: 6,
-                                  child: (data['ocupada'] == null
+                                  child: (!Butaca.fromJson(data)
+                                          .sonIguales(seleccionadas)
                                       ? Image.asset(
                                           'assets/asiento-de-cine.png')
                                       : Image.asset('assets/cinema-seat.png')),
