@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,20 +17,8 @@ class _MisEntradasScreenState extends State<MisEntradasScreen> {
   final auth = FirebaseAuth.instance;
   final fb = FirebaseFirestore.instance;
 
-  late List<String> data;
-  @override
-  _cargar() async {
-    var data = await fb
-        .collection('Personas')
-        .doc(auth.currentUser!.uid)
-        .collection('Entradas')
-        .snapshots()
-        .toList();
-  }
-
   @override
   void initState() {
-    _cargar();
     super.initState();
   }
 
@@ -40,21 +30,72 @@ class _MisEntradasScreenState extends State<MisEntradasScreen> {
       ),
       body: Column(
         children: [
-          Text('${auth.currentUser!.email}   ${auth.currentUser!.displayName}'),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0, top: 20),
+            child: Container(
+              child: Center(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Usuario:  ${auth.currentUser!.displayName}'),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text('Email:    ${auth.currentUser!.email}'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 35,
+          ),
+          Text(
+            'Tus codigos de entradas',
+            style: TextStyle(fontSize: 30),
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          Container(
+            height: 500,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: StreamBuilder(
+                stream: fb
+                    .collection('Personas')
+                    .doc(auth.currentUser!.uid)
+                    .collection('entradas')
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                        snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  final docs = snapshot.data!.docs;
+                  return ListView(
+                    children: docs.map((document) {
+                      return Center(
+                          child: Text(
+                        document.id,
+                        style: TextStyle(fontSize: 25),
+                      ));
+                    }).toList(),
+                  );
+                },
+              ),
+            ),
+          ),
           TextButton(
               onPressed: () async {
                 await auth.signOut();
-                if (auth.currentUser == null) Navigator.of(context).pop();
+                if (auth.currentUser == null)
+                  Navigator.of(context).popUntil((ruta) => ruta.isFirst);
               },
               child: Text('Logout')),
-          Container(
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Text(data[index]);
-              },
-              itemCount: data.length,
-            ),
-          )
         ],
       ),
     );
