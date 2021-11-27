@@ -3,7 +3,7 @@ import 'package:qrmovie/models/butaca_model.dart';
 class Persona {
   late String correo;
   late String? nom;
-  late List<Butaca> entradas;
+  late List<String> entradas;
 
   Persona({required this.nom, required this.correo, this.entradas = const []});
   Persona.fromJson(Map<String, dynamic> json)

@@ -11,6 +11,7 @@ import 'package:qrmovie/models/persona_model.dart';
 import 'package:qrmovie/models/sesion_model.dart';
 import 'package:qrmovie/screens/cartel_peli_screen.dart';
 import 'package:qrmovie/models/datosfalsos.dart';
+import 'package:qrmovie/screens/entradas_screen.dart';
 
 class CarteleraScreen extends StatefulWidget {
   const CarteleraScreen({Key? key}) : super(key: key);
@@ -55,7 +56,10 @@ class _CarteleraScreenState extends State<CarteleraScreen> {
       appBar: AppBar(
         actions: [
           ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MisEntradasScreen()));
+              },
               child: Row(
                 children: [
                   Text('Mis entradas'),
