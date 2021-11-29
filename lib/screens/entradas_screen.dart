@@ -28,75 +28,87 @@ class _MisEntradasScreenState extends State<MisEntradasScreen> {
       appBar: AppBar(
         title: Text('Mis Entradas'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0, left: 8.0, top: 20),
-            child: Container(
-              child: Center(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Usuario:  ${auth.currentUser!.displayName}'),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Text('Email:    ${auth.currentUser!.email}'),
-                  ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0, left: 8.0, top: 20),
+              child: Container(
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Usuario:  ${auth.currentUser!.displayName}'),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Text('Email:    ${auth.currentUser!.email}'),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 35,
-          ),
-          Text(
-            'Tus codigos de entradas',
-            style: TextStyle(fontSize: 30),
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          Container(
-            height: 500,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: StreamBuilder(
-                stream: fb
-                    .collection('Personas')
-                    .doc(auth.currentUser!.uid)
-                    .collection('entradas')
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                        snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  final docs = snapshot.data!.docs;
-                  return ListView(
-                    children: docs.map((document) {
+            SizedBox(
+              height: 35,
+            ),
+            Text(
+              'Tus codigos de entradas',
+              style: TextStyle(fontSize: 30),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+              height: 470,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: StreamBuilder(
+                  stream: fb
+                      .collection('Personas')
+                      .doc(auth.currentUser!.uid)
+                      .collection('entradas')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
+                    if (!snapshot.hasData) {
                       return Center(
-                          child: Text(
-                        document.id,
-                        style: TextStyle(fontSize: 25),
-                      ));
-                    }).toList(),
-                  );
-                },
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final docs = snapshot.data!.docs;
+                    return ListView(
+                      children: docs.map((document) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            tileColor: Colors.red,
+                            title: Text(
+                              document.id,
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            trailing: Image(
+                              image: AssetImage('assets/miniqr.png'),
+                              height: 40,
+                              width: 40,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          TextButton(
-              onPressed: () async {
-                await auth.signOut();
-                if (auth.currentUser == null)
-                  Navigator.of(context).popUntil((ruta) => ruta.isFirst);
-              },
-              child: Text('Logout')),
-        ],
+            ElevatedButton(
+                onPressed: () async {
+                  await auth.signOut();
+                  if (auth.currentUser == null)
+                    Navigator.of(context).popUntil((ruta) => ruta.isFirst);
+                },
+                child: Text('Logout')),
+          ],
+        ),
       ),
     );
   }
