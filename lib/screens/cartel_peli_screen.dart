@@ -92,37 +92,36 @@ class _CartelPeliculaState extends State<CartelPelicula> {
         CartelPrincipal(
           asset: widget.pelicula.asset,
         ),
-        Expanded(
-          child: Container(
-            child: ListView.separated(
-                itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        tileColor: Colors.red,
-                        leading: Stack(children: [
-                          Container(
-                            height: 40,
-                            child: Image(
-                              image: AssetImage('assets/entrada-de-cine.png'),
-                            ),
+        Container(
+          height: 500,
+          child: ListView.separated(
+              itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      tileColor: Colors.red,
+                      leading: Stack(children: [
+                        Container(
+                          height: 40,
+                          child: Image(
+                            image: AssetImage('assets/entrada-de-cine.png'),
                           ),
-                          Text(
-                            '${misEntradas[index].num}',
-                            style: styleTile,
-                          ),
-                        ]),
-                        title: Text(widget.pelicula.titulo),
-                        subtitle: Text(
-                          'Hora de la sesion: $horaSesion',
                         ),
+                        Text(
+                          '${misEntradas[index].num}',
+                          style: styleTile,
+                        ),
+                      ]),
+                      title: Text(widget.pelicula.titulo),
+                      subtitle: Text(
+                        'Hora de la sesion: $horaSesion',
                       ),
                     ),
-                separatorBuilder: (context, index) => Divider(
-                      height: 1,
-                      thickness: 1,
-                    ),
-                itemCount: misEntradas.length),
-          ),
+                  ),
+              separatorBuilder: (context, index) => Divider(
+                    height: 1,
+                    thickness: 1,
+                  ),
+              itemCount: misEntradas.length),
         ),
         GestureDetector(
           onTap: () {
