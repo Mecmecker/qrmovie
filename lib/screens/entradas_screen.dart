@@ -28,38 +28,37 @@ class _MisEntradasScreenState extends State<MisEntradasScreen> {
       appBar: AppBar(
         title: Text('Mis Entradas'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0, left: 8.0, top: 20),
-              child: Container(
-                child: Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('Usuario:  ${auth.currentUser!.displayName}'),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      Text('Email:    ${auth.currentUser!.email}'),
-                    ],
-                  ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0, left: 8.0, top: 20),
+            child: Container(
+              child: Center(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Usuario:  ${auth.currentUser!.displayName}'),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text('Email:    ${auth.currentUser!.email}'),
+                  ],
                 ),
               ),
             ),
-            SizedBox(
-              height: 35,
-            ),
-            Text(
-              'Tus codigos de entradas',
-              style: TextStyle(fontSize: 30),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Container(
-              height: 470,
+          ),
+          SizedBox(
+            height: 35,
+          ),
+          Text(
+            'Tus codigos de entradas',
+            style: TextStyle(fontSize: 30),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Expanded(
+            child: Container(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: StreamBuilder(
@@ -100,15 +99,15 @@ class _MisEntradasScreenState extends State<MisEntradasScreen> {
                 ),
               ),
             ),
-            ElevatedButton(
-                onPressed: () async {
-                  await auth.signOut();
-                  if (auth.currentUser == null)
-                    Navigator.of(context).popUntil((ruta) => ruta.isFirst);
-                },
-                child: Text('Logout')),
-          ],
-        ),
+          ),
+          ElevatedButton(
+              onPressed: () async {
+                await auth.signOut();
+                if (auth.currentUser == null)
+                  Navigator.of(context).popUntil((ruta) => ruta.isFirst);
+              },
+              child: Text('Logout')),
+        ],
       ),
     );
   }

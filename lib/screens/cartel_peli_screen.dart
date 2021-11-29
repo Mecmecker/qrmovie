@@ -76,8 +76,7 @@ class _CartelPeliculaState extends State<CartelPelicula> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: SingleChildScrollView(
-            child: (misEntradas.isEmpty ? Preventa() : EntradasCogidas())),
+        body: (misEntradas.isEmpty ? Preventa() : EntradasCogidas()),
       ),
     );
   }
@@ -92,36 +91,37 @@ class _CartelPeliculaState extends State<CartelPelicula> {
         CartelPrincipal(
           asset: widget.pelicula.asset,
         ),
-        Container(
-          height: 500,
-          child: ListView.separated(
-              itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      tileColor: Colors.red,
-                      leading: Stack(children: [
-                        Container(
-                          height: 40,
-                          child: Image(
-                            image: AssetImage('assets/entrada-de-cine.png'),
+        Expanded(
+          child: Container(
+            child: ListView.separated(
+                itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        tileColor: Colors.red,
+                        leading: Stack(children: [
+                          Container(
+                            height: 40,
+                            child: Image(
+                              image: AssetImage('assets/entrada-de-cine.png'),
+                            ),
                           ),
+                          Text(
+                            '${misEntradas[index].num}',
+                            style: styleTile,
+                          ),
+                        ]),
+                        title: Text(widget.pelicula.titulo),
+                        subtitle: Text(
+                          'Hora de la sesion: $horaSesion',
                         ),
-                        Text(
-                          '${misEntradas[index].num}',
-                          style: styleTile,
-                        ),
-                      ]),
-                      title: Text(widget.pelicula.titulo),
-                      subtitle: Text(
-                        'Hora de la sesion: $horaSesion',
                       ),
                     ),
-                  ),
-              separatorBuilder: (context, index) => Divider(
-                    height: 1,
-                    thickness: 1,
-                  ),
-              itemCount: misEntradas.length),
+                separatorBuilder: (context, index) => Divider(
+                      height: 1,
+                      thickness: 1,
+                    ),
+                itemCount: misEntradas.length),
+          ),
         ),
         GestureDetector(
           onTap: () {
@@ -161,54 +161,59 @@ class _CartelPeliculaState extends State<CartelPelicula> {
                   child: CircularProgressIndicator(),
                 );
               } else
-                return ListView.builder(
-                  physics: PageScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 10.0, right: 25),
-                      child: FloatingActionButton.extended(
-                        heroTag: null,
-                        backgroundColor: Colors.red,
-                        onPressed: () {
-                          Navigator.of(context)
-                              .push(
-                            MaterialPageRoute(
-                              builder: (context) => SalaButaca(
-                                sesion: Sesion(
-                                  hora: TimeOfDay(
-                                      hour: int.parse(widget
-                                          .pelicula.sesiones[index]
-                                          .split(':')[0]),
-                                      minute: int.parse(widget
-                                          .pelicula.sesiones[index]
-                                          .split(':')[1])),
+                return Expanded(
+                  child: Container(
+                    child: ListView.builder(
+                      physics: PageScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 10.0, right: 25),
+                          child: FloatingActionButton.extended(
+                            heroTag: null,
+                            backgroundColor: Colors.red,
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .push(
+                                MaterialPageRoute(
+                                  builder: (context) => SalaButaca(
+                                    sesion: Sesion(
+                                      hora: TimeOfDay(
+                                          hour: int.parse(widget
+                                              .pelicula.sesiones[index]
+                                              .split(':')[0]),
+                                          minute: int.parse(widget
+                                              .pelicula.sesiones[index]
+                                              .split(':')[1])),
+                                    ),
+                                    path: _paths[index],
+                                    titulo: widget.pelicula.titulo,
+                                    id: widget.pelicula.id,
+                                  ),
                                 ),
-                                path: _paths[index],
-                                titulo: widget.pelicula.titulo,
-                                id: widget.pelicula.id,
-                              ),
-                            ),
-                          )
-                              .then((entradas) async {
-                            if (entradas != null) {
-                              setState(() {
-                                horaSesion = entradas[0].toString();
-                                misEntradas = entradas[1];
-                                misEntradas
-                                    .sort((a, b) => a.num.compareTo(b.num));
+                              )
+                                  .then((entradas) async {
+                                if (entradas != null) {
+                                  setState(() {
+                                    horaSesion = entradas[0].toString();
+                                    misEntradas = entradas[1];
+                                    misEntradas
+                                        .sort((a, b) => a.num.compareTo(b.num));
+                                  });
+                                }
                               });
-                            }
-                          });
-                        },
-                        label: Text(
-                          '${widget.pelicula.sesiones[index]}',
-                          style: TextStyle(fontSize: 35, color: Colors.white),
-                        ),
-                      ),
-                    );
-                  },
-                  itemCount: widget.pelicula.sesiones.length,
-                  scrollDirection: Axis.horizontal,
+                            },
+                            label: Text(
+                              '${widget.pelicula.sesiones[index]}',
+                              style:
+                                  TextStyle(fontSize: 35, color: Colors.white),
+                            ),
+                          ),
+                        );
+                      },
+                      itemCount: widget.pelicula.sesiones.length,
+                      scrollDirection: Axis.horizontal,
+                    ),
+                  ),
                 );
             },
           ),
