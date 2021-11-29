@@ -76,7 +76,8 @@ class _CartelPeliculaState extends State<CartelPelicula> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: (misEntradas.isEmpty ? Preventa() : EntradasCogidas()),
+        body: SingleChildScrollView(
+            child: (misEntradas.isEmpty ? Preventa() : EntradasCogidas())),
       ),
     );
   }
