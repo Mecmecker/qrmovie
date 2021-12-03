@@ -1,5 +1,3 @@
-import 'package:qrmovie/models/butaca_model.dart';
-
 class Persona {
   late String correo;
   late String? nom;

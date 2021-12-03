@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qrmovie/models/butaca_model.dart';
+import 'package:qrmovie/Palma/butaca_model.dart';
 
 class bottomRow extends StatelessWidget {
   const bottomRow({Key? key, required this.butaca}) : super(key: key);

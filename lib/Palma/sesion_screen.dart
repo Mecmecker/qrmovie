@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:qrmovie/models/butaca_model.dart';
-import 'package:qrmovie/models/sesion_model.dart';
+import 'package:qrmovie/Palma/butaca_model.dart';
+import 'package:qrmovie/Palma/sesion_model.dart';
+
 import 'package:qrmovie/widgets/bottom.dart';
 
 class SalaScreen extends StatefulWidget {

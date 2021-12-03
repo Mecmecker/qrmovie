@@ -47,3 +47,4 @@ app.*.map.json
 
 # Evitar subir credenciales de Firebase
 google-services.json
+.env

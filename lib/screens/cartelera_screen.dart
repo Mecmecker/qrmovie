@@ -5,13 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:qrmovie/models/modelo_pelijson.dart';
-import 'package:qrmovie/models/peli_model.dart';
-import 'package:qrmovie/models/persona_model.dart';
-import 'package:qrmovie/models/sesion_model.dart';
+import 'package:qrmovie/Palma/entradas_screen.dart';
+import 'package:qrmovie/Palma/modelo_pelijson.dart';
+
 import 'package:qrmovie/screens/cartel_peli_screen.dart';
-import 'package:qrmovie/models/datosfalsos.dart';
-import 'package:qrmovie/screens/entradas_screen.dart';
 
 class CarteleraScreen extends StatefulWidget {
   const CarteleraScreen({Key? key}) : super(key: key);

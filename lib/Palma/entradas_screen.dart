@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:qrmovie/models/persona_model.dart';
+
 import 'package:qrmovie/screens/logIn.dart';
 
 class MisEntradasScreen extends StatefulWidget {
