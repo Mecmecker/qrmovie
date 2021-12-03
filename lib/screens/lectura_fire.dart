@@ -16,7 +16,7 @@ class _PrimeraState extends State<Primera> {
   final fb = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
-    Map<String, List<Sesiones>> lista = {};
+    Map<String, List<Sesiones>> mapaSesiones = {};
 
     return Scaffold(
         appBar: AppBar(
@@ -38,32 +38,32 @@ class _PrimeraState extends State<Primera> {
             }
             if (snapshot.connectionState == ConnectionState.done) {
               var data = snapshot.data!.docs;
-              var result = data.map((e) {
+              var listaSesiones = data.map((e) {
                 return Sesiones.fromJson(e.data());
               }).toList();
-              for (var ses in result) {
-                if (lista[ses.movieId] != null)
-                  lista[ses.movieId]!.add(ses);
+              for (var ses in listaSesiones) {
+                if (mapaSesiones[ses.movieId] != null)
+                  mapaSesiones[ses.movieId]!.add(ses);
                 else
-                  lista[ses.movieId] = [ses];
+                  mapaSesiones[ses.movieId] = [ses];
               }
 
               return GridView(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2),
                   children: [
-                    for (var x in lista.keys)
+                    for (var x in mapaSesiones.keys)
                       GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    CartelMovie(id: lista[x]![0].movieId),
+                                builder: (context) => CartelMovie(
+                                    id: mapaSesiones[x]![0].movieId),
                               ),
                             );
                           },
                           child: cartel(
-                            id: int.parse(lista[x]![0].movieId),
+                            id: int.parse(mapaSesiones[x]![0].movieId),
                           ))
                   ].toList());
             }

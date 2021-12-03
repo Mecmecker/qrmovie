@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:qrmovie/models/movies_models.dart';
 
 import 'package:qrmovie/widgets/bottom.dart';
@@ -22,6 +23,7 @@ class CartelMovie extends StatefulWidget {
 class _CartelMovieState extends State<CartelMovie> {
   final _auth = FirebaseAuth.instance;
   final fb = FirebaseFirestore.instance;
+  final apiKey = dotenv.env['API_KEY'];
 
   @override
   void initState() {
@@ -95,7 +97,7 @@ class _CartelMovieState extends State<CartelMovie> {
   Preventa() {
     return FutureBuilder(
         future: loadFilms(
-            'https://api.themoviedb.org/3/movie/${widget.id}?api_key=abc812104604d02963af68e823d82dee'),
+            'https://api.themoviedb.org/3/movie/${widget.id}?api_key=$apiKey'),
         builder: (BuildContext context, AsyncSnapshot<Movie> snapshot) {
           if (snapshot.hasError) {
             return Text("Something went wrong");
