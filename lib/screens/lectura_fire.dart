@@ -16,6 +16,8 @@ class _PrimeraState extends State<Primera> {
   final fb = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
+    Map<String, List<Sesiones>> lista = {};
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Pruebas'),
@@ -36,24 +38,34 @@ class _PrimeraState extends State<Primera> {
             }
             if (snapshot.connectionState == ConnectionState.done) {
               var data = snapshot.data!.docs;
-              return GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                children: data.map((e) {
-                  final sesion = Sesiones.fromJson(e.data());
+              var result = data.map((e) {
+                return Sesiones.fromJson(e.data());
+              }).toList();
+              for (var ses in result) {
+                if (lista[ses.movieId] != null)
+                  lista[ses.movieId]!.add(ses);
+                else
+                  lista[ses.movieId] = [ses];
+              }
 
-                  return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                CartelMovie(id: sesion.movieId),
-                          ),
-                        );
-                      },
-                      child: cartel(id: int.parse(sesion.movieId)));
-                }).toList(),
-              );
+              return GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  children: [
+                    for (var x in lista.keys)
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    CartelMovie(id: lista[x]![0].movieId),
+                              ),
+                            );
+                          },
+                          child: cartel(
+                            id: int.parse(lista[x]![0].movieId),
+                          ))
+                  ].toList());
             }
             return Text('loading');
           },
