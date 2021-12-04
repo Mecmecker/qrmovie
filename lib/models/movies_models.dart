@@ -6,6 +6,7 @@ class Movie {
   late String nom, poster, info;
   late int duracion, id;
   late double rate;
+  late List<dynamic> generos;
 
   Movie({
     required this.nom,
@@ -14,6 +15,7 @@ class Movie {
     required this.info,
     required this.duracion,
     required this.rate,
+    required this.generos,
   });
   Movie.fromJson(Map<String, dynamic> json)
       : this(
@@ -22,7 +24,8 @@ class Movie {
             poster: json['poster_path'],
             info: json['overview'],
             duracion: json['runtime'],
-            rate: json["vote_average"]);
+            rate: json["vote_average"],
+            generos: json["genres"]);
 }
 
 Future<Movie> loadFilms(path) async {

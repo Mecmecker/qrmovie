@@ -5,14 +5,14 @@ import 'package:qrmovie/models/sesiones_model.dart';
 import 'package:qrmovie/screens/movie_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class Primera extends StatefulWidget {
-  const Primera({Key? key}) : super(key: key);
+class CinemaShowtime extends StatefulWidget {
+  const CinemaShowtime({Key? key}) : super(key: key);
 
   @override
-  _PrimeraState createState() => _PrimeraState();
+  _CinemaShowtimeState createState() => _CinemaShowtimeState();
 }
 
-class _PrimeraState extends State<Primera> {
+class _CinemaShowtimeState extends State<CinemaShowtime> {
   final fb = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
@@ -57,8 +57,8 @@ class _PrimeraState extends State<Primera> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => CartelMovie(
-                                    id: mapaSesiones[x]![0].movieId),
+                                builder: (context) => CartelMovieScreen(
+                                    sesiones: mapaSesiones[x]!),
                               ),
                             );
                           },
