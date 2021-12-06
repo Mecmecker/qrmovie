@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:qrmovie/screens/theater_screen.dart';
 import 'package:qrmovie/models/movies_models.dart';
 import 'package:qrmovie/models/sesiones_model.dart';
 
@@ -279,7 +280,17 @@ class Horas extends StatelessWidget {
                 child: FloatingActionButton.extended(
                   heroTag: null,
                   backgroundColor: Colors.red,
-                  onPressed: () {},
+                  onPressed: () {
+                    final docRef = FirebaseFirestore.instance
+                        .collection('Sessions')
+                        .where("MovieId", isEqualTo: sesiones[index].movieId)
+                        .where("Hora", isEqualTo: sesiones[index].hora);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => TheaterScreen(
+                              sesion: sesiones[index],
+                              docRef: docRef,
+                            )));
+                  },
                   label: Text(
                     '${sesiones[index].hora.hour}:${sesiones[index].hora.minute}',
                     style: TextStyle(fontSize: 35, color: Colors.white),

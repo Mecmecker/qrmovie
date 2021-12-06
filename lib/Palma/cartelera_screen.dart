@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:qrmovie/Palma/entradas_screen.dart';
 import 'package:qrmovie/Palma/modelo_pelijson.dart';
 
-import 'package:qrmovie/screens/cartel_peli_screen.dart';
+import 'package:qrmovie/Palma/cartel_peli_screen.dart';
 
 class CarteleraScreen extends StatefulWidget {
   const CarteleraScreen({Key? key}) : super(key: key);

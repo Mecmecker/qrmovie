@@ -4,7 +4,7 @@ import 'package:qrmovie/Palma/butaca_model.dart';
 class bottomRow extends StatelessWidget {
   const bottomRow({Key? key, required this.butaca}) : super(key: key);
 
-  final List<Butaca> butaca;
+  final List<int> butaca;
 
   @override
   Widget build(BuildContext context) {
