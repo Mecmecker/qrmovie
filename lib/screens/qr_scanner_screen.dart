@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:qrmovie/Palma/entradas_screen.dart';
-import 'package:qrmovie/Palma/cartelera_screen.dart';
+import 'package:qrmovie/screens/showtimes_screen.dart';
 
 class QrScannerScreen extends StatefulWidget {
   const QrScannerScreen({Key? key}) : super(key: key);
@@ -60,7 +60,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       print(_qrCode);
       if (_qrCode != '-1')
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => CarteleraScreen()));
+            .push(MaterialPageRoute(builder: (context) => CinemaShowtime()));
     } on PlatformException {
       _qrCode = "Fail";
     }

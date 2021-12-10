@@ -7,6 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:qrmovie/screens/theater_screen.dart';
 import 'package:qrmovie/models/movies_models.dart';
 import 'package:qrmovie/models/sesiones_model.dart';
+import 'package:qrmovie/models/tickets_model.dart';
 
 import 'package:qrmovie/widgets/bottom.dart';
 
@@ -26,6 +27,7 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
   final _auth = FirebaseAuth.instance;
   final fb = FirebaseFirestore.instance;
   final apiKey = dotenv.env['API_KEY'];
+  final List<Tickets> tickets = [];
 
   @override
   void initState() {
@@ -112,12 +114,13 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
                     CartelPrincipal(
                       asset: 'https://image.tmdb.org/t/p/w500' +
                           snapshot.data!.poster,
+                      tickets: tickets,
                     ),
                     InfoPelicula(pelicula: snapshot.data!),
                     SizedBox(
                       height: 50,
                     ),
-                    Horas(sesiones: widget.sesiones)
+                    Horas(sesiones: widget.sesiones, tickets: tickets)
                   ]),
             );
           }
@@ -128,7 +131,9 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
 
 class CartelPrincipal extends StatelessWidget {
   final String asset;
-  const CartelPrincipal({Key? key, required this.asset}) : super(key: key);
+  final List<Tickets> tickets;
+  const CartelPrincipal({Key? key, required this.asset, required this.tickets})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +268,9 @@ class InfoPelicula extends StatelessWidget {
 
 class Horas extends StatelessWidget {
   final List<Sesiones> sesiones;
-  const Horas({Key? key, required this.sesiones}) : super(key: key);
+  final List<Tickets> tickets;
+  const Horas({Key? key, required this.sesiones, required this.tickets})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -285,11 +292,17 @@ class Horas extends StatelessWidget {
                         .collection('Sessions')
                         .where("MovieId", isEqualTo: sesiones[index].movieId)
                         .where("Hora", isEqualTo: sesiones[index].hora);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => TheaterScreen(
-                              sesion: sesiones[index],
-                              docRef: docRef,
-                            )));
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(
+                            builder: (context) => TheaterScreen(
+                                  sesion: sesiones[index],
+                                  docRef: docRef,
+                                )))
+                        .then((value) {
+                      if (value != null) {
+                        tickets.addAll(value);
+                      }
+                    });
                   },
                   label: Text(
                     '${sesiones[index].hora.hour}:${sesiones[index].hora.minute}',
