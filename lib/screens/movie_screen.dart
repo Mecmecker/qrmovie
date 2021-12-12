@@ -39,7 +39,7 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: Preventa(),
+        body: (tickets.isEmpty ? Preventa() : Text('entradas')),
       ),
     );
   }
@@ -120,7 +120,58 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
                     SizedBox(
                       height: 50,
                     ),
-                    Horas(sesiones: widget.sesiones, tickets: tickets)
+                    Container(
+                      height: 80,
+                      width: 170,
+                      child: Expanded(
+                        child: Container(
+                          child: ListView.builder(
+                            physics: PageScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, right: 25),
+                                child: FloatingActionButton.extended(
+                                  heroTag: null,
+                                  backgroundColor: Colors.red,
+                                  onPressed: () {
+                                    final docRef = FirebaseFirestore.instance
+                                        .collection('Sessions')
+                                        .where("MovieId",
+                                            isEqualTo:
+                                                widget.sesiones[index].movieId)
+                                        .where("Hora",
+                                            isEqualTo:
+                                                widget.sesiones[index].hora);
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => TheaterScreen(
+                                                  sesion:
+                                                      widget.sesiones[index],
+                                                  docRef: docRef,
+                                                )))
+                                        .then((value) {
+                                      if (value != null) {
+                                        setState(() {
+                                          tickets.addAll(value);
+                                        });
+                                      }
+                                    });
+                                  },
+                                  label: Text(
+                                    '${widget.sesiones[index].hora.hour}:${widget.sesiones[index].hora.minute}',
+                                    style: TextStyle(
+                                        fontSize: 35, color: Colors.white),
+                                  ),
+                                ),
+                              );
+                            },
+                            itemCount: widget.sesiones.length,
+                            scrollDirection: Axis.horizontal,
+                          ),
+                        ),
+                      ),
+                    )
                   ]),
             );
           }
