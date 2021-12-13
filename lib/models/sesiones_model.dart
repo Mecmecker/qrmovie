@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:http/http.dart' as http;
-
 class Sesiones {
   late String cine, movieId;
   late DateTime hora;

@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:qrmovie/Palma/entradas_screen.dart';
 import 'package:qrmovie/screens/showtimes_screen.dart';
 
 class QrScannerScreen extends StatefulWidget {
@@ -21,10 +18,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       appBar: AppBar(
         actions: [
           ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => MisEntradasScreen()));
-              },
+              onPressed: () {},
               child: Row(
                 children: [
                   Text('Mis entradas'),
