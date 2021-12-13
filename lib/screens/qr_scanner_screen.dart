@@ -1,6 +1,9 @@
+// ignore_for_file: curly_braces_in_flow_control_structures, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:qrmovie/screens/misentradasscreen.dart';
 import 'package:qrmovie/screens/showtimes_screen.dart';
 
 class QrScannerScreen extends StatefulWidget {
@@ -18,7 +21,10 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       appBar: AppBar(
         actions: [
           ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => EntradasReservadas()));
+              },
               child: Row(
                 children: [
                   Text('Mis entradas'),
@@ -53,8 +59,8 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       });
       print(_qrCode);
       if (_qrCode != '-1')
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => CinemaShowtime()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => CinemaShowtime(cine: _qrCode)));
     } on PlatformException {
       _qrCode = "Fail";
     }

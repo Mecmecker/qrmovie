@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures, file_names, prefer_const_constructors
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

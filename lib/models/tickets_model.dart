@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 class Tickets {
   late String id_user, id_sesion;
   late int butaca;
@@ -15,9 +17,9 @@ class Tickets {
 
   Map<String, dynamic> toJson() {
     return {
-      "butaca": this.butaca,
-      "sesion_id": this.id_sesion,
-      "user_id": this.id_user,
+      "butaca": butaca,
+      "sesion_id": id_sesion,
+      "user_id": id_user,
     };
   }
 }

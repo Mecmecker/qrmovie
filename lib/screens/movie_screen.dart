@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_string_interpolations
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_string_interpolations, unused_field, non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,8 +8,6 @@ import 'package:qrmovie/screens/theater_screen.dart';
 import 'package:qrmovie/models/movies_models.dart';
 import 'package:qrmovie/models/sesiones_model.dart';
 import 'package:qrmovie/models/tickets_model.dart';
-
-import 'package:qrmovie/widgets/bottom.dart';
 
 class CartelMovieScreen extends StatefulWidget {
   final List<Sesiones> sesiones;

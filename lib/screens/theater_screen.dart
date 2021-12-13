@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, duplicate_ignore, sized_box_for_whitespace
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -179,7 +181,7 @@ class _TeatroState extends State<Teatro> {
                   Tickets(
                       butaca: n,
                       id_sesion: widget.docRef,
-                      id_user: /*_auth.currentUser!.uid*/ 'pepe')
+                      id_user: _auth.currentUser!.uid)
               ];
               Navigator.of(context).pop(tickets);
             }

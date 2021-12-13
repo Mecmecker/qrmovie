@@ -1,13 +1,16 @@
+// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, prefer_const_declarations, camel_case_types
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qrmovie/models/movies_models.dart';
 import 'package:qrmovie/models/sesiones_model.dart';
-import 'package:qrmovie/screens/MisEntradasScreen.dart';
+import 'package:qrmovie/screens/misentradasscreen.dart';
 import 'package:qrmovie/screens/movie_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class CinemaShowtime extends StatefulWidget {
-  const CinemaShowtime({Key? key}) : super(key: key);
+  late String cine;
+  CinemaShowtime({Key? key, required this.cine}) : super(key: key);
 
   @override
   _CinemaShowtimeState createState() => _CinemaShowtimeState();
@@ -39,7 +42,7 @@ class _CinemaShowtimeState extends State<CinemaShowtime> {
         body: FutureBuilder(
           future: fb
               .collection('Sessions')
-              .where('Cine', isEqualTo: 'La Maquinista')
+              .where('Cine', isEqualTo: widget.cine)
               .get(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {

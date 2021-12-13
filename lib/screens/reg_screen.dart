@@ -1,3 +1,5 @@
+// ignore_for_file: unused_catch_clause, curly_braces_in_flow_control_structures, prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
