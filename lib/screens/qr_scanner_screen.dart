@@ -57,7 +57,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
       setState(() {
         _qrCode = qrCode;
       });
-      print(_qrCode);
+
       if (_qrCode != '-1')
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => CinemaShowtime(cine: _qrCode)));

@@ -42,6 +42,9 @@ class _TheaterScreenState extends State<TheaterScreen> {
                   .map((e) => Sesiones.fromJson(e.data()))
                   .toList();
               final ref = snapshot.data!.docs.map((e) => e.id).toList();
+              /* final Map<String, Sesiones> butacasOcupadas = snapshot.data!.docs
+                  .map((e) => {e.id, Sesiones.fromJson(e.data())}) as Map<String,Sesiones>; */
+
               return Column(
                 children: [
                   Padding(
@@ -111,7 +114,8 @@ class Teatro extends StatefulWidget {
 
 class _TeatroState extends State<Teatro> {
   final _auth = FirebaseAuth.instance;
-  List<int> seleccionadas = [];
+  Set seleccionadas = {};
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -128,8 +132,9 @@ class _TeatroState extends State<Teatro> {
                 child: CircularProgressIndicator(),
               );
             }
-            final docs = snapshot.data!.docs
-                .map((e) => Tickets.fromJson(e.data()).butaca);
+            final Set docs = snapshot.data!.docs
+                .map((e) => Tickets.fromJson(e.data()).butaca)
+                .toSet();
             return Container(
               height: 400,
               child: GridView.builder(

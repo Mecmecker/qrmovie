@@ -339,6 +339,7 @@ class Horas extends StatelessWidget {
                   onPressed: () {
                     final docRef = FirebaseFirestore.instance
                         .collection('Sessions')
+                        .where("Cine", isEqualTo: sesiones[index].cine)
                         .where("MovieId", isEqualTo: sesiones[index].movieId)
                         .where("Hora", isEqualTo: sesiones[index].hora);
                     Navigator.of(context)

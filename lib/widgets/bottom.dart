@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class bottomRow extends StatelessWidget {
   const bottomRow({Key? key, required this.butaca}) : super(key: key);
 
-  final List<int> butaca;
+  final Set butaca;
 
   @override
   Widget build(BuildContext context) {
