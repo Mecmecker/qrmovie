@@ -2,12 +2,9 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
-
 import 'package:qrmovie/screens/qr_scanner_screen.dart';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MyApp extends StatelessWidget {
@@ -28,6 +25,15 @@ class MyApp extends StatelessWidget {
           if (user == null) {
             const providers = [EmailProviderConfiguration()];
             return SignInScreen(
+              headerBuilder: (context, constraints, shrinkOffset) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Opacity(
+                  opacity: 0.8,
+                  child: Image.asset(
+                    'assets/LOGO.png',
+                  ),
+                ),
+              ),
               actions: [
                 AuthStateChangeAction<SignedIn>((context, state) {
                   // Navigator.pushReplacementNamed(context, '/qr-scann');
