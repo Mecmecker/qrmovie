@@ -38,9 +38,14 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: (tickets.isEmpty ? Preventa() : EntradasCogidas()),
+      child: WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: Scaffold(
+          backgroundColor: Colors.black,
+          body: (tickets.isEmpty ? Preventa() : EntradasCogidas()),
+        ),
       ),
     );
   }
@@ -52,9 +57,11 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
     );
     return Column(
       children: [
-        CartelPrincipal(
-          asset: cartelPeli!,
-          tickets: tickets.values.toList(),
+        Container(
+          child: CartelPrincipal(
+            asset: cartelPeli!,
+            tickets: tickets.values.toList(),
+          ),
         ),
         Expanded(
           child: Container(
@@ -213,7 +220,7 @@ class CartelPrincipal extends StatelessWidget {
       children: [
         Stack(
           children: [
-            Image.network(asset),
+            Container(height: 420, child: Image.network(asset)),
             FloatingActionButton.small(
               heroTag: null,
               onPressed: () {
