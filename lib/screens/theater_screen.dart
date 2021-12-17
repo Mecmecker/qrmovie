@@ -20,7 +20,6 @@ class TheaterScreen extends StatefulWidget {
 class _TheaterScreenState extends State<TheaterScreen> {
   @override
   Widget build(BuildContext context) {
-    final fb = FirebaseFirestore.instance;
     return Scaffold(
       appBar: AppBar(
         title: Text('Theater'),

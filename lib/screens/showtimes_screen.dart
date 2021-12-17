@@ -9,8 +9,8 @@ import 'package:qrmovie/screens/movie_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class CinemaShowtime extends StatefulWidget {
-  late String cine;
-  CinemaShowtime({Key? key, required this.cine}) : super(key: key);
+  final String cine;
+  const CinemaShowtime({Key? key, required this.cine}) : super(key: key);
 
   @override
   _CinemaShowtimeState createState() => _CinemaShowtimeState();

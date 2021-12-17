@@ -164,15 +164,18 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
                                         setState(() {
                                           horaPeli =
                                               widget.sesiones[index].hora;
-                                          var fb = FirebaseFirestore.instance;
-                                          for (Tickets ticket in value)
-                                            fb
-                                                .collection('Tickets')
-                                                .add(ticket.toJson())
-                                                .then((docref) =>
-                                                    tickets[docref.id] =
-                                                        ticket as Tickets);
                                         });
+                                        var fb = FirebaseFirestore.instance;
+                                        for (Tickets ticket in value) {
+                                          fb
+                                              .collection('Tickets')
+                                              .add(ticket.toJson())
+                                              .then((docref) {
+                                            setState(() {
+                                              tickets[docref.id] = ticket;
+                                            });
+                                          });
+                                        }
                                       }
                                     });
                                   },
