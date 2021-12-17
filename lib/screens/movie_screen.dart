@@ -8,6 +8,7 @@ import 'package:qrmovie/screens/theater_screen.dart';
 import 'package:qrmovie/models/movies_models.dart';
 import 'package:qrmovie/models/sesiones_model.dart';
 import 'package:qrmovie/models/tickets_model.dart';
+import 'package:qrmovie/widgets/bottom.dart';
 
 class CartelMovieScreen extends StatefulWidget {
   final List<Sesiones> sesiones;
@@ -25,7 +26,9 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
   final _auth = FirebaseAuth.instance;
   final fb = FirebaseFirestore.instance;
   final apiKey = dotenv.env['API_KEY'];
-  final List<Tickets> tickets = [];
+  final Map<String, Tickets> tickets = {};
+  String? cartelPeli;
+  DateTime? horaPeli;
 
   @override
   void initState() {
@@ -37,64 +40,65 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: (tickets.isEmpty ? Preventa() : Text('entradas')),
+        body: (tickets.isEmpty ? Preventa() : EntradasCogidas()),
       ),
     );
   }
 
-  // Column EntradasCogidas() {
-  //   final TextStyle styleTile = TextStyle(
-  //     fontSize: 20,
-  //     fontWeight: FontWeight.bold,
-  //   );
-  //   return Column(
-  //     children: [
-  //       CartelPrincipal(
-  //         asset: widget.pelicula.asset,
-  //       ),
-  //       Expanded(
-  //         child: Container(
-  //           child: ListView.separated(
-  //               itemBuilder: (context, index) => Padding(
-  //                     padding: const EdgeInsets.all(8.0),
-  //                     child: ListTile(
-  //                       tileColor: Colors.red,
-  //                       leading: Stack(children: [
-  //                         Container(
-  //                           height: 40,
-  //                           child: Image(
-  //                             image: AssetImage('assets/entrada-de-cine.png'),
-  //                           ),
-  //                         ),
-  //                         Text(
-  //                           '${misEntradas[index].num}',
-  //                           style: styleTile,
-  //                         ),
-  //                       ]),
-  //                       title: Text(widget.pelicula.titulo),
-  //                       subtitle: Text(
-  //                         'Hora de la sesion: $horaSesion',
-  //                       ),
-  //                     ),
-  //                   ),
-  //               separatorBuilder: (context, index) => Divider(
-  //                     height: 1,
-  //                     thickness: 1,
-  //                   ),
-  //               itemCount: misEntradas.length),
-  //         ),
-  //       ),
-  //       GestureDetector(
-  //         onTap: () {
-  //           Navigator.of(context).pop(misEntradas);
-  //         },
-  //         child: bottomRow(
-  //           butaca: misEntradas,
-  //         ),
-  //       )
-  //     ],
-  //   );
-  // }
+  Column EntradasCogidas() {
+    final TextStyle styleTile = TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    );
+    return Column(
+      children: [
+        CartelPrincipal(
+          asset: cartelPeli!,
+          tickets: tickets.values.toList(),
+        ),
+        Expanded(
+          child: Container(
+            child: ListView.separated(
+                itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        tileColor: Colors.red,
+                        leading: Stack(children: [
+                          Container(
+                            height: 40,
+                            child: Image(
+                              image: AssetImage('assets/entrada-de-cine.png'),
+                            ),
+                          ),
+                          Text(
+                            '${tickets.values.toList()[index].butaca}',
+                            style: styleTile,
+                          ),
+                        ]),
+                        title: Text(widget.sesiones[0].cine),
+                        subtitle: Text(
+                          'Hora de la sesion: ${horaPeli!.hour}:${horaPeli!.minute} ',
+                        ),
+                      ),
+                    ),
+                separatorBuilder: (context, index) => Divider(
+                      height: 1,
+                      thickness: 1,
+                    ),
+                itemCount: tickets.length),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: bottomRow(
+            butaca: tickets.values.toSet(),
+          ),
+        )
+      ],
+    );
+  }
 
   Preventa() {
     return FutureBuilder(
@@ -105,6 +109,8 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
             return Text("Something went wrong");
           }
           if (snapshot.connectionState == ConnectionState.done) {
+            cartelPeli =
+                'https://image.tmdb.org/t/p/w500' + snapshot.data!.poster;
             return SingleChildScrollView(
               child: Column(
                   // ignore: prefer_const_literals_to_create_immutables
@@ -112,7 +118,7 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
                     CartelPrincipal(
                       asset: 'https://image.tmdb.org/t/p/w500' +
                           snapshot.data!.poster,
-                      tickets: tickets,
+                      tickets: tickets.values.toList(),
                     ),
                     InfoPelicula(pelicula: snapshot.data!),
                     SizedBox(
@@ -135,6 +141,9 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
                                   onPressed: () {
                                     final docRef = FirebaseFirestore.instance
                                         .collection('Sessions')
+                                        .where("Cine",
+                                            isEqualTo:
+                                                widget.sesiones[index].cine)
                                         .where("MovieId",
                                             isEqualTo:
                                                 widget.sesiones[index].movieId)
@@ -142,16 +151,27 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
                                             isEqualTo:
                                                 widget.sesiones[index].hora);
                                     Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => TheaterScreen(
-                                                  sesion:
-                                                      widget.sesiones[index],
-                                                  docRef: docRef,
-                                                )))
+                                        .push(
+                                      MaterialPageRoute(
+                                        builder: (context) => TheaterScreen(
+                                          sesion: widget.sesiones[index],
+                                          docRef: docRef,
+                                        ),
+                                      ),
+                                    )
                                         .then((value) {
                                       if (value != null) {
                                         setState(() {
-                                          tickets.addAll(value);
+                                          horaPeli =
+                                              widget.sesiones[index].hora;
+                                          var fb = FirebaseFirestore.instance;
+                                          for (Tickets ticket in value)
+                                            fb
+                                                .collection('Tickets')
+                                                .add(ticket.toJson())
+                                                .then((docref) =>
+                                                    tickets[docref.id] =
+                                                        ticket as Tickets);
                                         });
                                       }
                                     });
@@ -311,61 +331,6 @@ class InfoPelicula extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class Horas extends StatelessWidget {
-  final List<Sesiones> sesiones;
-  final List<Tickets> tickets;
-  const Horas({Key? key, required this.sesiones, required this.tickets})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 80,
-      width: 170,
-      child: Expanded(
-        child: Container(
-          child: ListView.builder(
-            physics: PageScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 25),
-                child: FloatingActionButton.extended(
-                  heroTag: null,
-                  backgroundColor: Colors.red,
-                  onPressed: () {
-                    final docRef = FirebaseFirestore.instance
-                        .collection('Sessions')
-                        .where("Cine", isEqualTo: sesiones[index].cine)
-                        .where("MovieId", isEqualTo: sesiones[index].movieId)
-                        .where("Hora", isEqualTo: sesiones[index].hora);
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(
-                            builder: (context) => TheaterScreen(
-                                  sesion: sesiones[index],
-                                  docRef: docRef,
-                                )))
-                        .then((value) {
-                      if (value != null) {
-                        tickets.addAll(value);
-                      }
-                    });
-                  },
-                  label: Text(
-                    '${sesiones[index].hora.hour}:${sesiones[index].hora.minute}',
-                    style: TextStyle(fontSize: 35, color: Colors.white),
-                  ),
-                ),
-              );
-            },
-            itemCount: sesiones.length,
-            scrollDirection: Axis.horizontal,
-          ),
-        ),
-      ),
     );
   }
 }
