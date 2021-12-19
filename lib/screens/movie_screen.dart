@@ -86,6 +86,19 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
                         subtitle: Text(
                           'Hora de la sesion: ${horaPeli!.hour}:${horaPeli!.minute} ',
                         ),
+                        trailing: IconButton(
+                          onPressed: () {
+                            String ref = tickets.keys.toList()[index];
+                            FirebaseFirestore.instance
+                                .collection('Tickets')
+                                .doc(ref)
+                                .delete();
+                            setState(() {
+                              tickets.remove(ref);
+                            });
+                          },
+                          icon: Icon(Icons.delete),
+                        ),
                       ),
                     ),
                 separatorBuilder: (context, index) => Divider(
@@ -95,13 +108,45 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
                 itemCount: tickets.length),
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: bottomRow(
-            butaca: tickets.values.toSet(),
-          ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: bottomRow(
+                  butaca: tickets.values.toSet(),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(50)),
+                child: TextButton.icon(
+                  onPressed: () {
+                    for (var x in tickets.keys) {
+                      FirebaseFirestore.instance
+                          .collection('Tickets')
+                          .doc(x)
+                          .delete();
+                    }
+                    setState(() {
+                      tickets.clear();
+                    });
+                  },
+                  icon: Icon(Icons.cancel),
+                  label: Text(
+                    'Cancelar',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            )
+          ],
         )
       ],
     );
@@ -122,11 +167,24 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
               child: Column(
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    CartelPrincipal(
-                      asset: 'https://image.tmdb.org/t/p/w500' +
-                          snapshot.data!.poster,
-                      tickets: tickets.values.toList(),
-                    ),
+                    Stack(children: [
+                      CartelPrincipal(
+                        asset: 'https://image.tmdb.org/t/p/w500' +
+                            snapshot.data!.poster,
+                        tickets: tickets.values.toList(),
+                      ),
+                      FloatingActionButton.small(
+                        heroTag: null,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                        ),
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
+                      ),
+                    ]),
                     InfoPelicula(pelicula: snapshot.data!),
                     SizedBox(
                       height: 50,
@@ -218,22 +276,7 @@ class CartelPrincipal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Stack(
-          children: [
-            Container(height: 420, child: Image.network(asset)),
-            FloatingActionButton.small(
-              heroTag: null,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Icon(
-                Icons.arrow_back_ios_new_rounded,
-              ),
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-            )
-          ],
-        ),
+        Container(height: 420, child: Image.network(asset)),
       ],
     );
   }
