@@ -51,7 +51,7 @@ class _TheaterScreenState extends State<TheaterScreen> {
                     child: Container(
                       height: 50,
                       child: Text(
-                        'hola',
+                        widget.sesion.titol,
                         style: TextStyle(fontSize: 30),
                       ),
                     ),
@@ -134,48 +134,58 @@ class _TeatroState extends State<Teatro> {
             final Set docs = snapshot.data!.docs
                 .map((e) => Tickets.fromJson(e.data()).butaca)
                 .toSet();
-            return Container(
-              height: 400,
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 8),
-                itemBuilder: (context, index) {
-                  if (docs.contains(index)) {
-                    return Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Container(
-                        width: 6,
-                        height: 6,
-                        child: Image.asset('assets/asiento-de-cine-on.png'),
-                      ),
-                    );
-                  }
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (seleccionadas.contains(index)) {
-                          seleccionadas.remove(index);
-                        } else {
-                          seleccionadas.add(index);
-                        }
-                      });
+            return Opacity(
+              opacity: 0.8,
+              child: Container(
+                height: 370,
+                color: Colors.grey[900],
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 8),
+                    itemBuilder: (context, index) {
+                      if (docs.contains(index)) {
+                        return Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Container(
+                            width: 6,
+                            height: 6,
+                            child: Image.asset('assets/asiento-de-cine-on.png'),
+                          ),
+                        );
+                      }
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (seleccionadas.contains(index)) {
+                              seleccionadas.remove(index);
+                            } else {
+                              seleccionadas.add(index);
+                            }
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Container(
+                            width: 6,
+                            height: 6,
+                            child: (!seleccionadas.contains(index)
+                                ? Image.asset('assets/asiento-de-cine.png')
+                                : Image.asset('assets/cinema-seat.png')),
+                          ),
+                        ),
+                      );
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Container(
-                        width: 6,
-                        height: 6,
-                        child: (!seleccionadas.contains(index)
-                            ? Image.asset('assets/asiento-de-cine.png')
-                            : Image.asset('assets/cinema-seat.png')),
-                      ),
-                    ),
-                  );
-                },
-                itemCount: widget.sesion.numeroButacas,
+                    itemCount: widget.sesion.numeroButacas,
+                  ),
+                ),
               ),
             );
           },
+        ),
+        SizedBox(
+          height: 30,
         ),
         GestureDetector(
           onTap: () {
