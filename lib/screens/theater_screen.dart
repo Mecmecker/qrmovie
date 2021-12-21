@@ -195,7 +195,8 @@ class _TeatroState extends State<Teatro> {
                   Tickets(
                       butaca: n,
                       id_sesion: widget.docRef,
-                      id_user: _auth.currentUser!.uid)
+                      id_user: _auth.currentUser!.uid,
+                      dia: widget.sesion.hora)
               ];
               Navigator.of(context).pop(tickets);
             }
