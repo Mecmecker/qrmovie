@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:qrmovie/models/tickets_model.dart';
+import 'package:qrmovie/screens/MisEntradasScreen.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class EntradasReservadas extends StatefulWidget {
   const EntradasReservadas({Key? key}) : super(key: key);
@@ -36,11 +38,16 @@ class _EntradasReservadasState extends State<EntradasReservadas> {
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          SizedBox(
+            height: 20,
+          ),
           Text(
             'Welcome ${_auth.currentUser!.email}',
             style: TextStyle(fontSize: 24),
+          ),
+          SizedBox(
+            height: 20,
           ),
           Center(
             child: Row(
@@ -78,21 +85,27 @@ class _EntradasReservadasState extends State<EntradasReservadas> {
               ],
             ),
           ),
-          opcionesEntradas(auth: _auth, opcion: opcion),
+          SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: (opcion
+                ? AvaiableEntradas(auth: _auth)
+                : OutOfDateEntradas(auth: _auth)),
+          ),
         ],
       ),
     );
   }
 }
 
-class opcionesEntradas extends StatelessWidget {
-  const opcionesEntradas({
+class OutOfDateEntradas extends StatelessWidget {
+  const OutOfDateEntradas({
     Key? key,
     required FirebaseAuth auth,
-    required this.opcion,
   })  : _auth = auth,
         super(key: key);
-  final bool opcion;
+
   final FirebaseAuth _auth;
 
   @override
@@ -101,7 +114,7 @@ class opcionesEntradas extends StatelessWidget {
       future: FirebaseFirestore.instance
           .collection('Tickets')
           .where('user_id', isEqualTo: _auth.currentUser!.uid)
-          .where('dia', isLessThan: Timestamp.now())
+          .where('dia', isLessThan: DateTime.now())
           .get(),
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -128,10 +141,73 @@ class opcionesEntradas extends StatelessWidget {
             height: 500,
             child: ListView.builder(
               itemBuilder: (context, index) => ListTile(
-                title: Text('${data[index].butaca}'),
+                title: Text(
+                  '${data[index].id_sesion}',
+                  style: TextStyle(decoration: TextDecoration.lineThrough),
+                ),
               ),
               itemCount: data.length,
             ),
+          );
+        }
+        return Text('loading');
+      },
+    );
+  }
+}
+
+class AvaiableEntradas extends StatelessWidget {
+  const AvaiableEntradas({
+    Key? key,
+    required this.auth,
+  }) : super(key: key);
+  final FirebaseAuth auth;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: FirebaseFirestore.instance
+          .collection('Tickets')
+          .where('user_id', isEqualTo: auth.currentUser!.uid)
+          .where('dia', isGreaterThanOrEqualTo: DateTime.now())
+          .get(),
+      builder: (BuildContext context,
+          AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.hasData && !snapshot.data!.docs.isNotEmpty) {
+          return Center(
+            child: Container(
+              child: Text(
+                "No tienes entradas para proximas sesiones",
+                style: TextStyle(fontSize: 26),
+              ),
+            ),
+          );
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          final data = snapshot.data!.docs
+              .map((e) => Tickets.fromJson(e.data()))
+              .toList();
+          return ListView.builder(
+            itemBuilder: (context, index) => Card(
+              child: SizedBox(
+                height: 460,
+                child: Column(
+                  children: [
+                    QrImage(data: data[index].toString()),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text('${data[index].id_sesion}'),
+                  ],
+                ),
+              ),
+            ),
+            itemCount: data.length,
           );
         }
         return Text('loading');

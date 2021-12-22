@@ -27,4 +27,13 @@ class Tickets {
       "dia": dia,
     };
   }
+
+  @override
+  String toString() {
+    String salida = 'butaca: $butaca \n';
+    salida += 'sesion_id: $id_sesion \n';
+    salida += 'user_id: $id_user \n';
+    salida += 'dia: $dia \n';
+    return salida;
+  }
 }
