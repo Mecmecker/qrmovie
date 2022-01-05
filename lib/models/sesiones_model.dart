@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Sesiones {
   late String cine, movieId, titol;
   late DateTime hora;
@@ -21,4 +23,8 @@ class Sesiones {
           duracion: json['Duracion'],
           numeroButacas: json['NumeroButacas'],
         );
+
+  String fixedHour() {
+    return '${hora.hour}:${(hora.minute < 10 ? '0${hora.minute}' : '${hora.minute}')}';
+  }
 }

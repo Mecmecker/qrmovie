@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:qrmovie/models/sesiones_model.dart';
 import 'package:qrmovie/models/tickets_model.dart';
 import 'package:qrmovie/screens/MisEntradasScreen.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -140,10 +141,66 @@ class OutOfDateEntradas extends StatelessWidget {
           return Container(
             height: 500,
             child: ListView.builder(
-              itemBuilder: (context, index) => ListTile(
-                title: Text(
-                  '${data[index].id_sesion}',
-                  style: TextStyle(decoration: TextDecoration.lineThrough),
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () => showDialog(
+                    useSafeArea: true,
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      titleTextStyle: TextStyle(fontSize: 30),
+                      backgroundColor: Colors.grey.withOpacity(0.8),
+                      elevation: 10,
+                      title: Text("Ticket info"),
+                      content: FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection('Sessions')
+                            .doc(data[index].id_sesion)
+                            .get(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<
+                                    DocumentSnapshot<Map<String, dynamic>>>
+                                snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            final Sesiones sesion =
+                                Sesiones.fromJson(snapshot.data!.data()!);
+                            return Card(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(sesion.titol),
+                                  Text(
+                                    '${sesion.hora.day}/${sesion.hora.month}/${sesion.hora.year}',
+                                  ),
+                                  Text(sesion.cine),
+                                ],
+                              ),
+                            );
+                          }
+                          return Text('loading');
+                        },
+                      ),
+                    ),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.red[200],
+                        borderRadius: BorderRadius.circular(30)),
+                    child: Center(
+                      child: Text(
+                        '${data[index].id_sesion}',
+                        style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            fontSize: 30),
+                      ),
+                    ),
+                  ),
                 ),
               ),
               itemCount: data.length,

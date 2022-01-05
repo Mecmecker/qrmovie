@@ -24,7 +24,7 @@ class _CinemaShowtimeState extends State<CinemaShowtime> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Pruebas'),
+          title: Text('Cartelera'),
           actions: [
             ElevatedButton(
                 onPressed: () {
@@ -43,6 +43,7 @@ class _CinemaShowtimeState extends State<CinemaShowtime> {
           future: fb
               .collection('Sessions')
               .where('Cine', isEqualTo: widget.cine)
+              .where('Hora', isGreaterThanOrEqualTo: DateTime.now())
               .get(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {

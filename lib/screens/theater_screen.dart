@@ -61,7 +61,7 @@ class _TheaterScreenState extends State<TheaterScreen> {
                     child: Container(
                       height: 50,
                       child: Text(
-                        '${widget.sesion.hora.hour}:${widget.sesion.hora.minute}',
+                        widget.sesion.fixedHour(),
                         style: TextStyle(fontSize: 28),
                       ),
                     ),

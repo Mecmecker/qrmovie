@@ -28,7 +28,7 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
   final apiKey = dotenv.env['API_KEY'];
   final Map<String, Tickets> tickets = {};
   String? cartelPeli;
-  DateTime? horaPeli;
+  String? horaPeli;
 
   @override
   void initState() {
@@ -84,7 +84,7 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
                         ]),
                         title: Text(widget.sesiones[0].cine),
                         subtitle: Text(
-                          'Hora de la sesion: ${horaPeli!.hour}:${horaPeli!.minute} ',
+                          'Hora de la sesion: $horaPeli ',
                         ),
                         trailing: IconButton(
                           onPressed: () {
@@ -227,8 +227,8 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
                                         .then((value) {
                                       if (value != null) {
                                         setState(() {
-                                          horaPeli =
-                                              widget.sesiones[index].hora;
+                                          horaPeli = widget.sesiones[index]
+                                              .fixedHour();
                                         });
                                         var fb = FirebaseFirestore.instance;
                                         for (Tickets ticket in value) {
@@ -245,7 +245,7 @@ class _CartelMovieScreenState extends State<CartelMovieScreen> {
                                     });
                                   },
                                   label: Text(
-                                    '${widget.sesiones[index].hora.hour}:${widget.sesiones[index].hora.minute}',
+                                    widget.sesiones[index].fixedHour(),
                                     style: TextStyle(
                                         fontSize: 35, color: Colors.white),
                                   ),
